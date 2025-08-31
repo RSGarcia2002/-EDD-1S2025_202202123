@@ -1,0 +1,12 @@
+*.o
+*.ppu
+*.a
+*.so
+*.compiled
+*.bak
+*.lps
+/lib/
+/units/
+/backup/
+/bin/
+/tmp/
