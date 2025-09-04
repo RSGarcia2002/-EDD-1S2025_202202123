@@ -133,6 +133,7 @@
         <Filename Value="unitreportesusuario.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FormReportesUsuario"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UnitReportesUsuario"/>
       </Unit>

@@ -44,34 +44,20 @@ begin
   ModalResult := mrClose;
 end;
 
-procedure TFormMenuRoot.btnComuAgregarUsuarioClick(Sender: TObject);
+procedure TFormMenuRoot.btnComuCrearClick(Sender: TObject);
 var
-  comu, email: string;
-  u: PUserNode;
+  nom: string;
 begin
-  comu  := '';
-  email := '';
-  if not InputQuery('Agregar a comunidad', 'Nombre de comunidad:', comu) then Exit;
-  if not InputQuery('Agregar a comunidad', 'Email del usuario:', email) then Exit;
+  nom := ''; // valor por defecto para InputQuery
+  if not InputQuery('Crear comunidad', 'Nombre de comunidad:', nom) then Exit;
+  nom := Trim(nom);
+  if nom = '' then Exit;
 
-  comu  := Trim(comu);
-  email := Trim(email);
-  if (comu = '') or (email = '') then Exit;
-
-  u := User_FindByEmail(email);
-  if u = nil then
-  begin
-    MessageDlg('Ese email no existe como usuario.', mtError, [mbOK], 0);
-    Exit;
-  end;
-
-  // AddUserToCommunity_StrId devuelve Boolean
-  if AddUserToCommunity_StrId(comu, u^.Id, u^.Usuario) then
-    MessageDlg(Format('Se agregó %s (%s) a %s', [u^.Usuario, u^.Id, comu]),
-               mtInformation, [mbOK], 0)
+  // CrearComunidad devuelve PCommunity -> comparar contra nil
+  if CrearComunidad(nom) <> nil then
+    MessageDlg('Comunidad creada: ' + nom, mtInformation, [mbOK], 0)
   else
-    MessageDlg('No se pudo agregar (no existe la comunidad o ya está dentro).',
-               mtWarning, [mbOK], 0);
+    MessageDlg('Ya existe una comunidad con ese nombre.', mtWarning, [mbOK], 0);
 end;
 
 
@@ -95,6 +81,8 @@ var
   comu, email: string;
   u: PUserNode;
 begin
+  comu  := '';
+  email := '';
   if not InputQuery('Agregar a comunidad', 'Nombre de comunidad:', comu) then Exit;
   if not InputQuery('Agregar a comunidad', 'Email del usuario:', email) then Exit;
 
@@ -109,7 +97,7 @@ begin
     Exit;
   end;
 
-  // Tu estructura usa Id:string y Usuario:string → usamos el adaptador “StrId”
+  // AddUserToCommunity_StrId devuelve Boolean
   if AddUserToCommunity_StrId(comu, u^.Id, u^.Usuario) then
     MessageDlg(Format('Se agregó %s (%s) a %s', [u^.Usuario, u^.Id, comu]),
                mtInformation, [mbOK], 0)
