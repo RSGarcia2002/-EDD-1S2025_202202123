@@ -1,0 +1,64 @@
+object Form1: TForm1
+  Left = 1504
+  Height = 328
+  Top = 228
+  Width = 320
+  Caption = 'Form1'
+  ClientHeight = 328
+  ClientWidth = 320
+  LCLVersion = '4.2.0.0'
+  object btnCorreos: TButton
+    Left = 80
+    Height = 25
+    Top = 40
+    Width = 144
+    Caption = 'Reporte Correos'
+    TabOrder = 0
+    OnClick = btnCorreosClick
+  end
+  object btnPapelera: TButton
+    Left = 80
+    Height = 25
+    Top = 80
+    Width = 144
+    Caption = 'Reporte Papelera'
+    TabOrder = 1
+    OnClick = btnPapeleraClick
+  end
+  object btnProgramados: TButton
+    Left = 80
+    Height = 25
+    Top = 126
+    Width = 144
+    Caption = 'Reporte Programados'
+    TabOrder = 2
+    OnClick = btnProgramadosClick
+  end
+  object btnContactos: TButton
+    Left = 80
+    Height = 25
+    Top = 168
+    Width = 144
+    Caption = 'Reporte Contactos'
+    TabOrder = 3
+    OnClick = btnContactosClick
+  end
+  object btnAbrirCarpeta: TButton
+    Left = 80
+    Height = 25
+    Top = 216
+    Width = 144
+    Caption = 'Abrir Carpeta'
+    TabOrder = 4
+    OnClick = btnAbrirCarpetaClick
+  end
+  object btnCerrar: TButton
+    Left = 80
+    Height = 25
+    Top = 256
+    Width = 144
+    Caption = 'Cerrar'
+    TabOrder = 5
+    OnClick = btnCerrarClick
+  end
+end

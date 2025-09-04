@@ -1,0 +1,5 @@
+digraph Inbox {
+  rankdir=LR;
+  node [shape=box, style=rounded, fontsize=10];
+  n1 [label="[L] lgarcia@edd.com\nffdf\n2025-09-02 17:05"];
+}

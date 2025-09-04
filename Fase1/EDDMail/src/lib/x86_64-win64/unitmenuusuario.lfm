@@ -1,0 +1,100 @@
+object FormMenuUsuario: TFormMenuUsuario
+  Left = 1468
+  Height = 450
+  Top = 88
+  Width = 320
+  Caption = 'Menu Usuario'
+  ClientHeight = 450
+  ClientWidth = 320
+  Position = poScreenCenter
+  LCLVersion = '4.2.0.0'
+  OnCreate = FormCreate
+  object lblBienvenida: TLabel
+    Left = 64
+    Height = 15
+    Top = 40
+    Width = 59
+    Caption = 'Bienvenido'
+  end
+  object btnSalir: TButton
+    Left = 72
+    Height = 25
+    Top = 384
+    Width = 166
+    Caption = 'Salir'
+    TabOrder = 0
+    OnClick = btnSalirClick
+  end
+  object btnBandeja: TButton
+    Left = 72
+    Height = 25
+    Top = 104
+    Width = 168
+    Caption = 'Bandeja de entrada'
+    TabOrder = 1
+    OnClick = btnBandejaClick
+  end
+  object btnPapelera: TButton
+    Left = 72
+    Height = 25
+    Top = 200
+    Width = 168
+    Caption = 'Papelera'
+    TabOrder = 2
+    OnClick = btnPapeleraClick
+  end
+  object btnContactos: TButton
+    Left = 72
+    Height = 25
+    Top = 136
+    Width = 168
+    Caption = 'Contactos'
+    TabOrder = 3
+    OnClick = btnContactosClick
+  end
+  object btnEnviar: TButton
+    Left = 72
+    Height = 25
+    Top = 168
+    Width = 166
+    Caption = 'Enviar Correo'
+    TabOrder = 4
+    OnClick = btnEnviarClick
+  end
+  object btnPerfil: TButton
+    Left = 72
+    Height = 25
+    Top = 312
+    Width = 169
+    Caption = 'Perfil'
+    TabOrder = 5
+    OnClick = btnPerfilClick
+  end
+  object btnProgramar: TButton
+    Left = 73
+    Height = 25
+    Top = 240
+    Width = 165
+    Caption = 'Programar'
+    TabOrder = 6
+    OnClick = btnProgramarClick
+  end
+  object btnProgramados: TButton
+    Left = 73
+    Height = 25
+    Top = 277
+    Width = 165
+    Caption = 'Programados'
+    TabOrder = 7
+    OnClick = btnProgramadosClick
+  end
+  object btnReportes: TButton
+    Left = 72
+    Height = 25
+    Top = 352
+    Width = 166
+    Caption = 'Reportes'
+    TabOrder = 8
+    OnClick = btnReportesClick
+  end
+end

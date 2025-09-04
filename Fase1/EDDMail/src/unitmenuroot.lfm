@@ -1,0 +1,75 @@
+object FormMenuRoot: TFormMenuRoot
+  Left = 44
+  Height = 333
+  Top = 239
+  Width = 320
+  Caption = 'FormMenuRoot'
+  ClientHeight = 333
+  ClientWidth = 320
+  Position = poScreenCenter
+  LCLVersion = '4.2.0.0'
+  OnCreate = FormCreate
+  object btnCargaMasiva: TButton
+    Left = 96
+    Height = 25
+    Top = 56
+    Width = 120
+    Caption = 'Carga Masiva'
+    TabOrder = 0
+    OnClick = btnCargaMasivaClick
+  end
+  object btnReporteUsuarios: TButton
+    Left = 96
+    Height = 25
+    Top = 103
+    Width = 120
+    Caption = 'Reporte Usuario'
+    TabOrder = 1
+    OnClick = btnReporteUsuariosClick
+  end
+  object btnReporteRelaciones: TButton
+    Left = 96
+    Height = 25
+    Top = 152
+    Width = 120
+    Caption = 'Reporte Relaciones'
+    TabOrder = 2
+    OnClick = btnReporteRelacionesClick
+  end
+  object btnCerrarSesion: TButton
+    Left = 8
+    Height = 25
+    Top = 8
+    Width = 75
+    Caption = 'Cerrar Sesion'
+    TabOrder = 3
+    OnClick = btnCerrarSesionClick
+  end
+  object btnComuCrear: TButton
+    Left = 93
+    Height = 25
+    Top = 200
+    Width = 123
+    Caption = 'Crear Comunidad'
+    TabOrder = 4
+    OnClick = btnComuCrearClick
+  end
+  object btnComuAgregarUsuario: TButton
+    Left = 72
+    Height = 25
+    Top = 240
+    Width = 171
+    Caption = 'Agregar Usuario a Comunidad'
+    TabOrder = 5
+    OnClick = btnComuAgregarUsuarioClick
+  end
+  object btnComuReporte: TButton
+    Left = 80
+    Height = 25
+    Top = 279
+    Width = 147
+    Caption = 'Reporte Comunidades'
+    TabOrder = 6
+    OnClick = btnComuReporteClick
+  end
+end

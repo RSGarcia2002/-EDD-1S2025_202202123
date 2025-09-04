@@ -1,0 +1,47 @@
+object FormProgramados: TFormProgramados
+  Left = 1419
+  Height = 320
+  Top = 414
+  Width = 435
+  Caption = 'FormProgramados'
+  ClientHeight = 320
+  ClientWidth = 435
+  LCLVersion = '4.2.0.0'
+  OnShow = FormShow
+  object lbProgramados: TListBox
+    Left = 56
+    Height = 200
+    Top = 8
+    Width = 312
+    ItemHeight = 0
+    TabOrder = 0
+    OnClick = lbProgramadosClick
+  end
+  object btnEnviarAhora: TButton
+    Left = 56
+    Height = 25
+    Top = 240
+    Width = 96
+    Caption = 'Enviar Ahora'
+    TabOrder = 1
+    OnClick = btnEnviarAhoraClick
+  end
+  object btnEliminarSel: TButton
+    Left = 168
+    Height = 25
+    Top = 240
+    Width = 99
+    Caption = 'Eliminar'
+    TabOrder = 2
+    OnClick = btnEliminarSelClick
+  end
+  object btnCerrar: TButton
+    Left = 280
+    Height = 25
+    Top = 240
+    Width = 96
+    Caption = 'Cerrar'
+    TabOrder = 3
+    OnClick = btnCerrarClick
+  end
+end

@@ -1,0 +1,78 @@
+object FormProgramarCorreo: TFormProgramarCorreo
+  Left = 1429
+  Height = 394
+  Top = 514
+  Width = 421
+  Caption = 'FormProgramarCorreo'
+  ClientHeight = 394
+  ClientWidth = 421
+  LCLVersion = '4.2.0.0'
+  object edtPara: TEdit
+    Left = 72
+    Height = 23
+    Top = 24
+    Width = 256
+    TabOrder = 0
+    Text = 'Destinario (email)'
+  end
+  object edtAsunto: TEdit
+    Left = 72
+    Height = 23
+    Top = 64
+    Width = 256
+    TabOrder = 1
+    Text = 'Asunto'
+  end
+  object memMensaje: TMemo
+    Left = 72
+    Height = 128
+    Top = 96
+    Width = 254
+    Lines.Strings = (
+      'memMensaje'
+    )
+    TabOrder = 2
+  end
+  object btnProgramar: TButton
+    Left = 56
+    Height = 25
+    Top = 336
+    Width = 96
+    Caption = 'Programar'
+    TabOrder = 3
+    OnClick = btnProgramarClick
+  end
+  object btnCancelar: TButton
+    Left = 200
+    Height = 25
+    Top = 336
+    Width = 104
+    Caption = 'Cancelar'
+    TabOrder = 4
+    OnClick = btnCancelarClick
+  end
+  object deFecha: TDateEdit
+    Left = 72
+    Height = 23
+    Top = 240
+    Width = 256
+    CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
+    DateOrder = doNone
+    ButtonWidth = 23
+    NumGlyphs = 1
+    MaxLength = 0
+    TabOrder = 5
+    Text = 'deFecha'
+  end
+  object teHora: TTimeEdit
+    Left = 72
+    Height = 23
+    Top = 277
+    Width = 254
+    ButtonWidth = 23
+    NumGlyphs = 1
+    MaxLength = 0
+    TabOrder = 6
+    Text = 'teHora'
+  end
+end

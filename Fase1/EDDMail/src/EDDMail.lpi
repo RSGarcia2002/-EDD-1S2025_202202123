@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="12"/>
+    <PathDelim Value="\"/>
+    <General>
+      <SessionStorage Value="InProjectDir"/>
+      <Title Value="EDDMail"/>
+      <Scaled Value="True"/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <XPManifest>
+        <DpiAware Value="True"/>
+      </XPManifest>
+      <Icon Value="0"/>
+    </General>
+    <BuildModes>
+      <Item Name="Default" Default="True"/>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+      <UseFileFilters Value="True"/>
+    </PublishOptions>
+    <RunParams>
+      <FormatVersion Value="2"/>
+    </RunParams>
+    <RequiredPackages>
+      <Item>
+        <PackageName Value="LCL"/>
+      </Item>
+    </RequiredPackages>
+    <Units>
+      <Unit>
+        <Filename Value="EDDMail.lpr"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitlogin.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormLogin"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitLogin"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitmenuroot.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormMenuRoot"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitMenuRoot"/>
+      </Unit>
+      <Unit>
+        <Filename Value="udatacore.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UDataCore"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ujsonloader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UJSONLoader"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ureportes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UReportes"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitmenuusuario.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormMenuUsuario"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitMenuUsuario"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitbandeja.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormBandeja"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitBandeja"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitpapelera.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormPapelera"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitPapelera"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitcontactos.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormContactos"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitContactos"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitenviarcorreo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormEnviarCorreo"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitEnviarCorreo"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitperfil.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormPerfil"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitPerfil"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitprogramarcorreo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormProgramarCorreo"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitProgramarCorreo"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitprogramados.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormProgramados"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitProgramados"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitreportesusuario.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormReportesUsuario"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitReportesUsuario"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitcrearcuenta.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormCrearCuenta"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitCrearCuenta"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ucomunidades.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UComunidades"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ucomunidadesadapters.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UComunidadesAdapters"/>
+      </Unit>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="EDDMail"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
+    <Linking>
+      <Debugging>
+        <DebugInfoType Value="dsDwarf3"/>
+      </Debugging>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions>
+      <Item>
+        <Name Value="EAbort"/>
+      </Item>
+      <Item>
+        <Name Value="ECodetoolError"/>
+      </Item>
+      <Item>
+        <Name Value="EFOpenError"/>
+      </Item>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

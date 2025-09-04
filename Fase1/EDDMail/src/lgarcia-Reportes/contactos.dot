@@ -1,0 +1,6 @@
+digraph Contactos {
+  rankdir=LR;
+  node [shape=box, style=rounded, fontsize=10];
+  c1 [label="Steven Mejia\n<smejia@edd.com>"];
+  c1 -> c1;
+}

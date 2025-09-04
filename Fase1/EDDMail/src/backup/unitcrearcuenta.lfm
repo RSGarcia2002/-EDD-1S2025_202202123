@@ -1,0 +1,112 @@
+object FormCrearCuenta: TFormCrearCuenta
+  Left = 1478
+  Height = 371
+  Top = 226
+  Width = 352
+  Caption = 'Crear Cuenta'
+  ClientHeight = 371
+  ClientWidth = 352
+  Position = poScreenCenter
+  LCLVersion = '4.2.0.0'
+  object lblNombre: TLabel
+    Left = 40
+    Height = 15
+    Top = 48
+    Width = 44
+    Caption = 'Nombre'
+  end
+  object lblUsuario: TLabel
+    Left = 43
+    Height = 15
+    Top = 88
+    Width = 40
+    Caption = 'Usuario'
+  end
+  object lblEmail: TLabel
+    Left = 43
+    Height = 15
+    Top = 127
+    Width = 29
+    Caption = 'Email'
+  end
+  object lblTelefono: TLabel
+    Left = 43
+    Height = 15
+    Top = 160
+    Width = 46
+    Caption = 'Telefono'
+  end
+  object lblPass: TLabel
+    Left = 43
+    Height = 15
+    Top = 192
+    Width = 50
+    Caption = 'Password'
+  end
+  object Label6: TLabel
+    Left = 43
+    Height = 15
+    Top = 224
+    Width = 59
+    Caption = 'Password 2'
+  end
+  object edtNombre: TEdit
+    Left = 104
+    Height = 23
+    Top = 41
+    Width = 184
+    TabOrder = 0
+  end
+  object edtUsuario: TEdit
+    Left = 104
+    Height = 23
+    Top = 80
+    Width = 184
+    TabOrder = 1
+  end
+  object edtEmail: TEdit
+    Left = 104
+    Height = 23
+    Top = 119
+    Width = 184
+    TabOrder = 2
+  end
+  object edtTelefono: TEdit
+    Left = 104
+    Height = 23
+    Top = 152
+    Width = 184
+    TabOrder = 3
+  end
+  object edtPass: TEdit
+    Left = 104
+    Height = 23
+    Top = 184
+    Width = 184
+    TabOrder = 4
+  end
+  object edtPass2: TEdit
+    Left = 104
+    Height = 23
+    Top = 216
+    Width = 184
+    TabOrder = 5
+    Text = 'confirma tu contraseña'
+  end
+  object btnCrear: TButton
+    Left = 55
+    Height = 25
+    Top = 264
+    Width = 75
+    Caption = 'Crear'
+    TabOrder = 6
+  end
+  object btnCancelar: TButton
+    Left = 192
+    Height = 25
+    Top = 264
+    Width = 75
+    Caption = 'Cancelar'
+    TabOrder = 7
+  end
+end
