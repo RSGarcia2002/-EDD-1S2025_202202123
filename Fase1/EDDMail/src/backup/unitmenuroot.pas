@@ -117,16 +117,11 @@ begin
 end;
 
 procedure TFormMenuRoot.btnReporteUsuariosClick(Sender: TObject);
-var
-  dir, fileDot: string;
+var dot, png, msg: string;
 begin
-  dir     := RootReportsDir;
-  fileDot := IncludeTrailingPathDelimiter(dir) + 'usuarios.dot';
-  Users_GenerateDot(fileDot);
-
-  MessageDlg('Reporte generado:' + LineEnding + fileDot + LineEnding +
-             'Para PNG: dot -Tpng -O "' + fileDot + '"',
-             mtInformation, [mbOK], 0);
+  msg := ReporteUsuarios_Generar('root', dot, png);
+  ShowMessage(msg);
+   RunCommand('xdg-open "'+png+'"', ...);
 end;
 
 procedure TFormMenuRoot.btnReporteRelacionesClick(Sender: TObject);

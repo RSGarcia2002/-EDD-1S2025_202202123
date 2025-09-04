@@ -1,22 +1,25 @@
 digraph Usuarios {
-  labelloc="t";
-  label="Usuarios registrados";
-  fontname="Helvetica";
-  node [shape=plaintext, fontname="Helvetica"];
-  usuarios_table [label=<
-  <table border="1" cellborder="1" cellspacing="0" cellpadding="6">
-    <tr bgcolor="#e8f1ff"><td><b>ID</b></td><td><b>Nombre</b></td><td><b>Usuario</b></td><td><b>Email</b></td><td><b>Teléfono</b></td></tr>
-    <tr><td>20250903184500299</td><td>Randall</td><td>rgarcia</td><td>rgarcia@edd.com</td><td>49867130</td></tr>
-    <tr><td>10</td><td>Ian Murdock</td><td>imurdock</td><td>imurdock@edd.com</td><td>41235678</td></tr>
-    <tr><td>9</td><td>Mitchell Baker</td><td>mbaker</td><td>mbaker@edd.com</td><td>19384756</td></tr>
-    <tr><td>8</td><td>Karen Sandler</td><td>ksandler</td><td>ksandler@edd.com</td><td>89514362</td></tr>
-    <tr><td>7</td><td>Jon Corbet</td><td>jcorbet</td><td>jcorbet@edd.com</td><td>75849231</td></tr>
-    <tr><td>6</td><td>Brian Fox</td><td>bfox</td><td>bfox@edd.com</td><td>64578231</td></tr>
-    <tr><td>5</td><td>Steven Mejia</td><td>smejia</td><td>smejia@edd.com</td><td>23419875</td></tr>
-    <tr><td>4</td><td>Mark Shuttleworth</td><td>mshuttleworth</td><td>mshuttleworth@edd.com</td><td>76018423</td></tr>
-    <tr><td>3</td><td>Greg Kroah-Hartman</td><td>gkroah-hartman</td><td>gkroah-hartman@edd.com</td><td>31628954</td></tr>
-    <tr><td>2</td><td>Marcos Itzep</td><td>mitzep</td><td>mitzep@edd.com</td><td>87654321</td></tr>
-    <tr><td>1</td><td>Luis Garcia</td><td>lgarcia</td><td>lgarcia@edd.com</td><td>12345678</td></tr>
-  </table>
-  >];
+  rankdir=LR;
+  node [shape=record, fontsize=10, fontname="Helvetica"];
+  edge [arrowhead=vee, arrowsize=0.6];
+
+  n0 [label="{Id: 10|Nombre: Ian Murdock|Usuario: imurdock|Email: imurdock@edd.com|Tel: 41235678}"];
+  n1 [label="{Id: 9|Nombre: Mitchell Baker|Usuario: mbaker|Email: mbaker@edd.com|Tel: 19384756}"];
+  n0 -> n1;
+  n2 [label="{Id: 8|Nombre: Karen Sandler|Usuario: ksandler|Email: ksandler@edd.com|Tel: 89514362}"];
+  n1 -> n2;
+  n3 [label="{Id: 7|Nombre: Jon Corbet|Usuario: jcorbet|Email: jcorbet@edd.com|Tel: 75849231}"];
+  n2 -> n3;
+  n4 [label="{Id: 6|Nombre: Brian Fox|Usuario: bfox|Email: bfox@edd.com|Tel: 64578231}"];
+  n3 -> n4;
+  n5 [label="{Id: 5|Nombre: Steven Mejia|Usuario: smejia|Email: smejia@edd.com|Tel: 23419875}"];
+  n4 -> n5;
+  n6 [label="{Id: 4|Nombre: Mark Shuttleworth|Usuario: mshuttleworth|Email: mshuttleworth@edd.com|Tel: 76018423}"];
+  n5 -> n6;
+  n7 [label="{Id: 3|Nombre: Greg Kroah-Hartman|Usuario: gkroah-hartman|Email: gkroah-hartman@edd.com|Tel: 31628954}"];
+  n6 -> n7;
+  n8 [label="{Id: 2|Nombre: Marcos Itzep|Usuario: mitzep|Email: mitzep@edd.com|Tel: 87654321}"];
+  n7 -> n8;
+  n9 [label="{Id: 1|Nombre: Luis Garcia|Usuario: lgarcia|Email: lgarcia@edd.com|Tel: 12345678}"];
+  n8 -> n9;
 }

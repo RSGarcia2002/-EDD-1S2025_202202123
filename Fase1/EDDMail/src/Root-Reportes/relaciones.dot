@@ -3,11 +3,14 @@ digraph Relaciones {
   labelloc="t";
   label="Relaciones de envío (matriz dispersa)";
   node [shape=box, style="rounded,filled", fillcolor="#eef7ff"];
-  "lgarcia@edd.com";
+  "imurdock@edd.com";
+  "mbaker@edd.com";
+  "ksandler@edd.com";
+  "jcorbet@edd.com";
   "bfox@edd.com";
   "smejia@edd.com";
-  "lgarcia@edd.com" -> "bfox@edd.com" [label="1"];
-  "lgarcia@edd.com" -> "smejia@edd.com" [label="1"];
-  "smejia@edd.com" -> "lgarcia@edd.com" [label="1"];
-  "smejia@edd.com" -> "bfox@edd.com" [label="1"];
+  "mshuttleworth@edd.com";
+  "gkroah-hartman@edd.com";
+  "mitzep@edd.com";
+  "lgarcia@edd.com";
 }
