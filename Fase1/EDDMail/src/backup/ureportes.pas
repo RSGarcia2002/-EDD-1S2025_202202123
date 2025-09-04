@@ -126,26 +126,7 @@ begin
               '(Instala Graphviz para generar PNG con dot)';
 end;
 
-try
-  if FileExists(RutaDot) then
-  begin
-    P := TProcess.Create(nil);
-    try
-      P.Executable := 'dot';
-      P.Parameters.Add('-Tpng');
-      P.Parameters.Add(RutaDot);
-      P.Parameters.Add('-o');
-      P.Parameters.Add(RutaPNG);
-      P.Options := [poWaitOnExit];
-      P.Execute;
-      okExec := (P.ExitStatus = 0) and FileExists(RutaPNG);
-    finally
-      P.Free;
-    end;
-  end;
-except
-  okExec := False;
-end;
+
 
 end.
 

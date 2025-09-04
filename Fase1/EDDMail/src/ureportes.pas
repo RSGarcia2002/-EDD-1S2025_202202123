@@ -5,15 +5,14 @@ unit UReportes;
 interface
 
 uses
-  SysUtils;
+  SysUtils, Classes;
 
 function ReporteUsuarios_Generar(out RutaDot: string; out RutaPNG: string): string;
 
 implementation
 
 uses
-  Classes, UDataCore
-  {$IFDEF UNIX}, Process{$ENDIF}; // para ejecutar 'dot' opcionalmente
+  UDataCore, Process;
 
 function EnsureDir(const Dir: string): boolean;
 begin
@@ -23,13 +22,51 @@ end;
 
 function San(const S: string): string;
 begin
-  // Escapa comillas y pipes para etiquetas Graphviz
+  // Escapa caracteres problemáticos para etiquetas Graphviz
   Result := StringReplace(S, '"', '\"', [rfReplaceAll]);
   Result := StringReplace(Result, '|', '\|', [rfReplaceAll]);
   Result := StringReplace(Result, '{', '\{', [rfReplaceAll]);
   Result := StringReplace(Result, '}', '\}', [rfReplaceAll]);
-  // Graphviz entiende \n como salto
+  // Graphviz entiende \n como salto de línea
   Result := StringReplace(Result, LineEnding, '\n', [rfReplaceAll]);
+end;
+
+function RunDotToPNG(const ARutaDot, ARutaPNG: string; out ErrMsg: string): boolean;
+var
+  P: TProcess;
+  OutBuf: TStringList;
+begin
+  Result := False;
+  ErrMsg := '';
+  P := TProcess.Create(nil);
+  OutBuf := TStringList.Create;
+  try
+    // Usa 'dot' del PATH (Linux/Windows/Mac)
+    P.Executable := 'dot';
+    P.Parameters.Add('-Tpng');
+    P.Parameters.Add(ARutaDot);
+    P.Parameters.Add('-o');
+    P.Parameters.Add(ARutaPNG);
+    // Captura stderr en stdout y espera a que termine
+    P.Options := [poUsePipes, poWaitOnExit, poStderrToOutPut];
+    try
+      P.Execute;
+      // Lee la salida/errores para depurar si algo falla
+      OutBuf.LoadFromStream(P.Output);
+      ErrMsg := Trim(OutBuf.Text);
+    except
+      on E: Exception do
+        ErrMsg := 'No se pudo ejecutar "dot". ¿Está Graphviz instalado y en el PATH? Detalle: ' + E.Message;
+    end;
+
+    Result := (P.ExitStatus = 0) and FileExists(ARutaPNG);
+    if (not Result) and (ErrMsg = '') then
+      ErrMsg := 'dot finalizó con código ' + IntToStr(P.ExitStatus) +
+                ' y no se encontró el PNG en: ' + ARutaPNG;
+  finally
+    OutBuf.Free;
+    P.Free;
+  end;
 end;
 
 function ReporteUsuarios_Generar(out RutaDot: string; out RutaPNG: string): string;
@@ -41,32 +78,36 @@ var
   nodeName, prevNode: string;
   dot: string;
   okExec: boolean;
-{$IFDEF UNIX}
-  P: TProcess;
-{$ENDIF}
+  Err: string;
 begin
   RutaDot := '';
   RutaPNG := '';
-  outDir  := IncludeTrailingPathDelimiter(GetCurrentDir) + 'Root-Reportes';
+
+  // Carpeta de salida: <cwd>/Root-Reportes
+  outDir := IncludeTrailingPathDelimiter(GetCurrentDir) + 'Root-Reportes';
   if not EnsureDir(outDir) then
-    Exit('No se pudo crear la carpeta Root-Reportes en: ' + outDir);
+  begin
+    Result := 'No se pudo crear la carpeta Root-Reportes en: ' + outDir;
+    Exit;
+  end;
 
   RutaDot := IncludeTrailingPathDelimiter(outDir) + 'usuarios.dot';
   RutaPNG := IncludeTrailingPathDelimiter(outDir) + 'usuarios.png';
 
+  // Construcción del archivo DOT
   L := TStringList.Create;
   try
-    // Cabecera DOT
     L.Add('digraph Usuarios {');
     L.Add('  rankdir=LR;');
     L.Add('  node [shape=record, fontsize=10, fontname="Helvetica"];');
     L.Add('  edge [arrowhead=vee, arrowsize=0.6];');
     L.Add('');
 
-    // Generar nodos y enlaces como lista simple
+    // Lista simple de usuarios
     cur := UsersHead;
     idx := 0;
     prevNode := '';
+
     while cur <> nil do
     begin
       nodeName := 'n' + IntToStr(idx);
@@ -93,40 +134,22 @@ begin
     L.Free;
   end;
 
-  // (Opcional) Generar PNG con Graphviz si está disponible (solo UNIX)
-  okExec := False;
-{$IFDEF UNIX}
-  try
-    if FileExists('/usr/bin/dot') or FileExists('/bin/dot') then
-    begin
-      P := TProcess.Create(nil);
-      try
-        P.Executable := 'dot';
-        P.Parameters.Add('-Tpng');
-        P.Parameters.Add(RutaDot);
-        P.Parameters.Add('-o');
-        P.Parameters.Add(RutaPNG);
-        P.Options := [poUsePipes, poWaitOnExit];
-        P.Execute;
-        okExec := (P.ExitStatus = 0) and FileExists(RutaPNG);
-      finally
-        P.Free;
-      end;
-    end;
-  except
-    okExec := False;
-  end;
-{$ENDIF}
+  // Intentar generar el PNG con Graphviz
+  okExec := RunDotToPNG(RutaDot, RutaPNG, Err);
 
   if okExec then
     Result := 'Reporte generado: ' + RutaDot + LineEnding +
               'Imagen generada:  ' + RutaPNG
   else
+  begin
+    // Mensaje claro si falta Graphviz o si dot falló
+    if Err = '' then
+      Err := 'Instala Graphviz (paquete "graphviz") o verifica que "dot" esté en el PATH.';
     Result := 'Reporte generado: ' + RutaDot + LineEnding +
-              '(Instala Graphviz para generar PNG con dot)';
+              'No se pudo generar el PNG.' + LineEnding +
+              'Detalle: ' + Err;
+  end;
 end;
-
-
 
 end.
 
