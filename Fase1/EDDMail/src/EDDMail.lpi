@@ -155,6 +155,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="UComunidadesAdapters"/>
       </Unit>
+      <Unit>
+        <Filename Value="..\..\..\Fase 2\src\ubst_communities.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UBST_Communities"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -165,6 +170,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="..\..\..\Fase 2\src"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

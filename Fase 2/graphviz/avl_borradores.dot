@@ -1,0 +1,5 @@
+digraph AVL_Borradores { node [shape=record, fillcolor="#E8F5E9", style=filled];
+  "2" [label="ID=2|Borrador 2"];
+  "2" -> "1";
+  "1" [label="ID=1|Borrador 1"];
+}

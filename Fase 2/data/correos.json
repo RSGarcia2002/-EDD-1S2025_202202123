@@ -1,0 +1,20 @@
+{
+  "correos": [
+    {
+      "id": 1,
+      "remitente": "ana@edd.com",
+      "destinatario": "luis@edd.com",
+      "estado": "NL",
+      "asunto": "Reunión de proyecto",
+      "mensaje": "Confirmar asistencia a la reunión."
+    },
+    {
+      "id": 2,
+      "remitente": "luis@edd.com",
+      "destinatario": "marcos@edd.com",
+      "estado": "NL",
+      "asunto": "Reporte semanal",
+      "mensaje": "Adjunto reporte."
+    }
+  ]
+}

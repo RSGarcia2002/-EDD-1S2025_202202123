@@ -1,0 +1,5 @@
+digraph BTree_Favoritos { node [shape=record, fillcolor="#FFF3E0", style=filled]; rankdir=TB;
+  "blk1" [label="105"];
+  "blk1" -> "blk2";
+  "blk2" [label="101|102|103|104"];
+}

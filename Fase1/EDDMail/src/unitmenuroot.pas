@@ -121,7 +121,7 @@ var dot, png, msg: string;
 begin
   msg := ReporteUsuarios_Generar('root', dot, png);
   ShowMessage(msg);
-   RunCommand('xdg-open "'+png+'"', ...);
+   //RunCommand('xdg-open "'+png+'"', ...);
 end;
 
 procedure TFormMenuRoot.btnReporteRelacionesClick(Sender: TObject);

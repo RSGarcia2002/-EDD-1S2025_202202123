@@ -1,0 +1,9 @@
+digraph BST_Contactos {
+  node [shape=record, style=filled, fillcolor="#E3F2FD"];
+  rankdir=TB;
+  "ana@edd.com" [label="Ana | ana@edd.com"];
+  "ana@edd.com" -> "luis@edd.com";
+  "luis@edd.com" [label="Luis | luis@edd.com"];
+  "luis@edd.com" -> "marcos@edd.com";
+  "marcos@edd.com" [label="Marcos | marcos@edd.com"];
+}

@@ -1,7 +1,7 @@
 object FormLogin: TFormLogin
-  Left = 1467
+  Left = 447
   Height = 270
-  Top = 281
+  Top = 235
   Width = 359
   Caption = 'EDDMail - Login'
   ClientHeight = 270
@@ -64,5 +64,14 @@ object FormLogin: TFormLogin
     Caption = 'Crear Cuenta'
     TabOrder = 4
     OnClick = btnCrearCuentaClick
+  end
+  object Button1: TButton
+    Left = 16
+    Height = 25
+    Top = 232
+    Width = 75
+    Caption = 'Reportes fase 2'
+    TabOrder = 5
+    OnClick = btnReportesFase2Click
   end
 end

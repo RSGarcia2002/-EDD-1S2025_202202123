@@ -15,6 +15,7 @@ type
     btnEntrar: TButton;
     btnSalir: TButton;
     btnCrearCuenta: TButton;
+    Button1: TButton;
     edtEmail: TEdit;
     edtPassword: TEdit;
     Label1: TLabel;
@@ -24,6 +25,7 @@ type
     procedure btnCrearCuentaClick(Sender: TObject);
     procedure btnEntrarClick(Sender: TObject);
     procedure btnSalirClick(Sender: TObject);
+    procedure btnReportesFase2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
     procedure AbrirMenuRootModal;
@@ -36,7 +38,7 @@ implementation
 
 
 {$R *.lfm}
-uses UnitMenuRoot, UnitMenuUsuario, UDataCore;
+uses UnitMenuRoot, UnitMenuUsuario, UDataCore,UnitCrearCuenta;
 
 
 procedure TFormLogin.FormCreate(Sender: TObject);
@@ -96,6 +98,12 @@ end;
 procedure TFormLogin.btnSalirClick(Sender: TObject);
 begin
   Application.Terminate;
+end;
+
+procedure TFormLogin.btnReportesFase2Click(Sender: TObject);
+begin
+    GenerateAllWIPReports; // Crea Fase2/graphviz/*.dot
+  ShowMessage('Reportes Fase 2 generados en Fase2/graphviz');
 end;
 
 end.
