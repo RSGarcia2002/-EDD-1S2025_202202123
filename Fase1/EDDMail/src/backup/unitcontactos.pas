@@ -14,10 +14,12 @@ type
   TFormContactos = class(TForm)
     btnAgregar: TButton;
     btnCerrar: TButton;
+    btnEliminarContacto: TButton;
     edtEmailBuscar: TEdit;
     lbContactos: TListBox;
     procedure btnAgregarClick(Sender: TObject);
     procedure btnCerrarClick(Sender: TObject);
+    procedure btnEliminarContactoClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -33,7 +35,7 @@ implementation
 
 {$R *.lfm}
 
-uses UDataCore;
+uses UDataCore,UnitEliminarContacto;
 
 procedure TFormContactos.Refrescar;
 begin
@@ -55,6 +57,22 @@ procedure TFormContactos.btnCerrarClick(Sender: TObject);
 begin
   Close;
 end;
+
+procedure TFormContactos.btnEliminarContactoClick(Sender: TObject);
+var r: Integer;
+begin
+  if not Assigned(FormEliminarContacto) then
+    Application.CreateForm(TFormEliminarContacto, FormEliminarContacto);
+
+  FormEliminarContacto.Position := poScreenCenter;
+  FormEliminarContacto.ModalResult := mrNone;
+  r := FormEliminarContacto.ShowModal;
+
+  if r = mrOk then
+    Refrescar;
+end;
+
+
 procedure TFormContactos.FormActivate(Sender: TObject);
 begin
   Refrescar; // se llama cada vez que el form toma foco
@@ -108,6 +126,8 @@ begin
   edtEmailBuscar.Clear;
   Refrescar;
 end;
+
+
 
 end.
 

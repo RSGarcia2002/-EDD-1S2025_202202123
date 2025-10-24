@@ -28,6 +28,7 @@ type
     lblPass2: TLabel;
     procedure btnCancelarClick(Sender: TObject);
     procedure btnCrearClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     function EmailValido(const S: string): boolean;
@@ -118,6 +119,11 @@ begin
 
   MessageDlg('Cuenta creada correctamente. Ya puedes iniciar sesión.', mtInformation, [mbOK], 0);
   Close;
+end;
+
+procedure TFormCrearCuenta.FormCreate(Sender: TObject);
+begin
+
 end;
 
 end.

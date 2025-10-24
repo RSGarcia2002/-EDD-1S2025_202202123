@@ -1,7 +1,7 @@
 object FormLogin: TFormLogin
-  Left = 447
+  Left = 1776
   Height = 270
-  Top = 235
+  Top = 203
   Width = 359
   Caption = 'EDDMail - Login'
   ClientHeight = 270

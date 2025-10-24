@@ -1,11 +1,11 @@
 object FormEnviarCorreo: TFormEnviarCorreo
-  Left = 1486
-  Height = 315
-  Top = 59
-  Width = 320
+  Left = 381
+  Height = 374
+  Top = 204
+  Width = 538
   Caption = 'Enviar Correo'
-  ClientHeight = 315
-  ClientWidth = 320
+  ClientHeight = 374
+  ClientWidth = 538
   Position = poScreenCenter
   LCLVersion = '4.2.0.0'
   object edtPara: TEdit
@@ -51,5 +51,40 @@ object FormEnviarCorreo: TFormEnviarCorreo
     Caption = 'Cancelar'
     TabOrder = 4
     OnClick = btnCancelarClick
+  end
+  object btnGuardarBorrador: TButton
+    Left = 88
+    Height = 25
+    Top = 288
+    Width = 144
+    Caption = 'Guardar como borrador'
+    TabOrder = 5
+    OnClick = btnGuardarBorradorClick
+  end
+  object btnVerBorradores: TButton
+    Left = 88
+    Height = 25
+    Top = 320
+    Width = 144
+    Caption = 'Ver Borradores'
+    TabOrder = 6
+    OnClick = btnVerBorradoresClick
+  end
+  object Memo1: TMemo
+    Left = 296
+    Height = 98
+    Top = 104
+    Width = 200
+    Lines.Strings = (
+      'Memo1'
+    )
+    TabOrder = 7
+  end
+  object Label1: TLabel
+    Left = 368
+    Height = 15
+    Top = 72
+    Width = 57
+    Caption = 'Borradores'
   end
 end

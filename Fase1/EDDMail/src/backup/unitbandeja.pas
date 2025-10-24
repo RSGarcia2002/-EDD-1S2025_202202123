@@ -5,21 +5,32 @@ unit UnitBandeja;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, UDataCore, Math, DateUtils;
 
 type
+  { TFormBandeja }
   TFormBandeja = class(TForm)
     btnCerrar: TButton;
     btnEliminar: TButton;
     btnOrdenar: TButton;
+    btnFavorito: TButton;
+    lblNoLeidos: TLabel;
     lbBandeja: TListBox;
-    procedure FormShow(Sender: TObject);
+    memDetalle: TMemo;
+    procedure btnFavoritoClick(Sender: TObject);
     procedure btnCerrarClick(Sender: TObject);
     procedure btnEliminarClick(Sender: TObject);
     procedure btnOrdenarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure lbBandejaClick(Sender: TObject);
     procedure lbBandejaDblClick(Sender: TObject);
   private
+    FMap: TFPList; // mapa paralelo de PMailNode
     procedure CargarLista;
+    procedure MostrarDetalle;
+    function SelectedMailNode: PMailNode;
   public
   end;
 
@@ -31,43 +42,219 @@ implementation
 {$R *.lfm}
 
 uses
-  UDataCore, UnitPapelera;
+  UnitPapelera, UDomain, UBTree_Favoritos, UReports;
 
-procedure TFormBandeja.CargarLista;
+{ ===== Ciclo de vida ===== }
+
+procedure TFormBandeja.FormCreate(Sender: TObject);
 begin
-  // SIEMPRE filtrado por el usuario logueado
-  Inbox_ToStringsFor(lbBandeja.Items, CurrentUserEmail);
+  FMap := TFPList.Create;
+
+  // Asegura que los eventos queden bien aunque el .lfm estuviera mal
+  if Assigned(lbBandeja) then
+  begin
+    lbBandeja.OnClick    := @lbBandejaClick;
+    lbBandeja.OnDblClick := @lbBandejaDblClick;
+  end;
+  btnOrdenar.OnClick   := @btnOrdenarClick;
+  btnEliminar.OnClick  := @btnEliminarClick;
+  btnFavorito.OnClick  := @btnFavoritoClick;
+  btnCerrar.OnClick    := @btnCerrarClick;
+end;
+
+procedure TFormBandeja.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(FMap);
 end;
 
 procedure TFormBandeja.FormShow(Sender: TObject);
 begin
+  Caption := 'Bandeja - ' + Domain_GetCurrentUser;
   CargarLista;
+
 end;
 
-procedure TFormBandeja.btnCerrarClick(Sender: TObject);
+
+{ ===== Helpers ===== }
+
+procedure TFormBandeja.CargarLista;
+var
+  cur: PMailNode;
+  i, noLeidos: Integer;
+  display, ownerEmail, dsto: string;
 begin
-  Close;
+  ownerEmail := LowerCase(Trim(Domain_GetCurrentUser));
+
+  FMap.Clear;
+  lbBandeja.Items.BeginUpdate;
+  try
+    lbBandeja.Clear;
+    memDetalle.Clear;
+
+    if ownerEmail = '' then
+    begin
+      lbBandeja.Items.Add('(Usuario no establecido. Inicia sesión)');
+      lblNoLeidos.Caption := 'No leídos: 0';
+      Exit;
+    end;
+
+    i := 0;
+    noLeidos := 0;
+    cur := InboxHead;
+    while cur <> nil do
+    begin
+      dsto := LowerCase(Trim(cur^.Destinatario));
+      if dsto = ownerEmail then
+      begin
+        Inc(i);
+        if SameText(cur^.Estado, 'NL') then
+          Inc(noLeidos);
+
+        FMap.Add(cur);
+        display := Format('%d) [%s] %s - %s (%s)',
+          [i, cur^.Estado, cur^.Remitente, cur^.Asunto, cur^.Fecha]);
+        lbBandeja.Items.Add(display);
+      end;
+      cur := cur^.Next;
+    end;
+
+    if i = 0 then
+      lbBandeja.Items.Add('(No hay correos para ' + Domain_GetCurrentUser + ')');
+
+    lblNoLeidos.Caption := 'No leídos: ' + IntToStr(noLeidos);
+  finally
+    lbBandeja.Items.EndUpdate;
+  end;
+
+  if FMap.Count > 0 then
+  begin
+    lbBandeja.ItemIndex := 0;
+    MostrarDetalle;
+  end;
+end;
+
+
+
+
+
+function TFormBandeja.SelectedMailNode: PMailNode;
+var
+  idx: Integer;
+  txt: string;
+begin
+  Result := nil;
+  if (FMap = nil) or (FMap.Count = 0) then Exit;
+
+  idx := lbBandeja.ItemIndex;
+  if (idx < 0) or (idx >= lbBandeja.Items.Count) then Exit;
+
+  // Evitar seleccionar el placeholder "(Bandeja vacía)" o similares
+  txt := lbBandeja.Items[idx];
+  if (txt <> '') and (txt[1] = '(') then Exit;
+
+  if (idx < FMap.Count) then
+    Result := PMailNode(FMap[idx]);
+end;
+
+
+
+procedure TFormBandeja.MostrarDetalle;
+var
+  node: PMailNode;
+begin
+  memDetalle.Clear;
+  node := SelectedMailNode;
+  if node = nil then Exit;
+
+  memDetalle.Lines.BeginUpdate;
+  try
+    memDetalle.Lines.Add('ID:        ' + node^.Id);
+    memDetalle.Lines.Add('Estado:    ' + node^.Estado);
+    memDetalle.Lines.Add('Fecha:     ' + node^.Fecha);
+    memDetalle.Lines.Add('De:        ' + node^.Remitente);
+    memDetalle.Lines.Add('Para:      ' + node^.Destinatario);
+    memDetalle.Lines.Add('Asunto:    ' + node^.Asunto);
+    memDetalle.Lines.Add('---');
+    memDetalle.Lines.Add(node^.Mensaje);
+  finally
+    memDetalle.Lines.EndUpdate;
+  end;
+end;
+
+{ ===== Eventos UI ===== }
+
+procedure TFormBandeja.lbBandejaClick(Sender: TObject);
+begin
+  MostrarDetalle;
+end;
+
+procedure TFormBandeja.lbBandejaDblClick(Sender: TObject);
+var
+  node: PMailNode;
+begin
+  node := SelectedMailNode;
+  if node = nil then Exit;
+
+  if node^.Estado = 'NL' then node^.Estado := 'L'
+  else node^.Estado := 'NL';
+
+  CargarLista; // repinta lista y mapa
+end;
+
+procedure TFormBandeja.btnOrdenarClick(Sender: TObject);
+  procedure SortBySubject;
+  var i, j: Integer; A, B: PMailNode;
+  begin
+    for i := 0 to FMap.Count - 2 do
+      for j := i + 1 to FMap.Count - 1 do
+      begin
+        A := PMailNode(FMap[i]);
+        B := PMailNode(FMap[j]);
+        if CompareText(A^.Asunto, B^.Asunto) > 0 then
+          FMap.Exchange(i, j);
+      end;
+  end;
+
+var
+  i: Integer;
+  N: PMailNode;
+begin
+  if (FMap = nil) or (FMap.Count <= 1) then Exit;
+
+  SortBySubject;
+
+  lbBandeja.Items.BeginUpdate;
+  try
+    lbBandeja.Clear;
+    for i := 0 to FMap.Count - 1 do
+    begin
+      N := PMailNode(FMap[i]);
+      lbBandeja.Items.Add(Format('%d) [%s] %s - %s (%s)',
+        [i + 1, N^.Estado, N^.Remitente, N^.Asunto, N^.Fecha]));
+    end;
+  finally
+    lbBandeja.Items.EndUpdate;
+  end;
+
+  lbBandeja.ItemIndex := 0;
+  MostrarDetalle;
 end;
 
 procedure TFormBandeja.btnEliminarClick(Sender: TObject);
 var
-  idx1: Integer;
   node: PMailNode;
   id, rem, dest, asu, fec, msg, est: string;
 begin
-  if lbBandeja.ItemIndex < 0 then
+  node := SelectedMailNode;
+  if node = nil then
   begin
     MessageDlg('Selecciona un correo primero.', mtWarning, [mbOK], 0);
     Exit;
   end;
 
-  idx1 := lbBandeja.ItemIndex + 1;               // índice 1-based del subconjunto
-  node := Inbox_GetNthFor(CurrentUserEmail, idx1);
-
-  if (node <> nil) and Inbox_RemoveNode(node, id, rem, dest, asu, fec, msg, est) then
+  if Inbox_RemoveNode(node, id, rem, dest, asu, fec, msg, est) then
   begin
     Trash_Push(id, rem, dest, asu, fec, msg, est);
-    // refrescar papelera si existe
     if Assigned(FormPapelera) then
       Trash_ToStrings(FormPapelera.lbPapelera.Items);
     CargarLista;
@@ -77,60 +264,42 @@ begin
     MessageDlg('No se pudo eliminar el correo.', mtError, [mbOK], 0);
 end;
 
-procedure TFormBandeja.btnOrdenarClick(Sender: TObject);
+procedure TFormBandeja.btnFavoritoClick(Sender: TObject);
 var
-  cur: PMailNode;
-  tmp: TStringList;
-  i: Integer;
-  key, display, sep: string;
+  node: PMailNode;
+  MF: TMailFav;
+  favId: Int64;
 begin
-  // Ordena SOLO lo del usuario actual (vista filtrada)
-  tmp := TStringList.Create;
-  try
-    sep := '||';
-    cur := InboxHead;
-    while cur <> nil do
-    begin
-      if SameText(cur^.Destinatario, CurrentUserEmail) then
-      begin
-        key := LowerCase(cur^.Asunto);
-        display := Format('[%s] %s - %s (%s)', [cur^.Estado, cur^.Remitente, cur^.Asunto, cur^.Fecha]);
-        tmp.Add(key + sep + display);
-      end;
-      cur := cur^.Next;
-    end;
-
-    tmp.Sort;
-
-    lbBandeja.Items.BeginUpdate;
-    try
-      lbBandeja.Items.Clear;
-      for i := 0 to tmp.Count - 1 do
-      begin
-        display := Copy(tmp[i], Pos(sep, tmp[i]) + Length(sep), MaxInt);
-        lbBandeja.Items.Add(Format('%d) %s', [i + 1, display]));
-      end;
-    finally
-      lbBandeja.Items.EndUpdate;
-    end;
-  finally
-    tmp.Free;
+  node := SelectedMailNode;
+  if node = nil then
+  begin
+    MessageDlg('Selecciona un correo.', mtWarning, [mbOK], 0);
+    Exit;
   end;
+
+  // ID robusto: intenta convertir el Id del mail a Int64, si no, crea uno
+  favId := StrToInt64Def(node^.Id, 0);
+  if favId = 0 then
+    favId := StrToInt64Def(StringReplace(FormatDateTime('yyyymmddhhnnss', Now), ' ', '', [rfReplaceAll]), 0);
+  if favId = 0 then
+    favId := MilliSecondOf(Now); // último fallback pequeño pero único en la sesión
+
+  MF.Id           := favId;
+  MF.Remitente    := node^.Remitente;
+  MF.Destinatario := node^.Destinatario;
+  MF.Asunto       := node^.Asunto;
+  MF.Mensaje      := node^.Mensaje;
+  MF.Fecha        := node^.Fecha;
+
+  BTree_Insert_WIP(GlobalFavs, MF);
+  GenerateFavoritesReportOnly;
+
+  MessageDlg('Añadido a Favoritos (y reporte actualizado).', mtInformation, [mbOK], 0);
 end;
 
-procedure TFormBandeja.lbBandejaDblClick(Sender: TObject);
-var
-  idx1: Integer;
-  node: PMailNode;
+procedure TFormBandeja.btnCerrarClick(Sender: TObject);
 begin
-  if lbBandeja.ItemIndex < 0 then Exit;
-
-  idx1 := lbBandeja.ItemIndex + 1;
-  node := Inbox_GetNthFor(CurrentUserEmail, idx1);
-  if node = nil then Exit;
-
-  if node^.Estado = 'NL' then node^.Estado := 'L' else node^.Estado := 'NL';
-  CargarLista;
+  Close;
 end;
 
 end.

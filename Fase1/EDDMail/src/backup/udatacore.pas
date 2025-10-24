@@ -5,7 +5,7 @@ unit UDataCore;
 interface
 
 uses
-  SysUtils, Classes;
+  Classes, SysUtils, StrUtils, DateUtils, fpjson, jsonparser,  UDomain, UAVL_Borradores, UBTree_Favoritos;
 
 {======================  USUARIOS: lista simple  ======================}
 
@@ -24,7 +24,6 @@ type
 
 var
   UsersHead: PUserNode = nil;
-  CurrentUserEmail: string = ''; // email de la sesión actual
 
 procedure UserList_Clear;
 procedure UserList_AddOrUpdate(const AId, ANombre, AUsuario, AEmail, ATel, APass: string);
@@ -64,6 +63,8 @@ procedure Inbox_ToStringsFor(const L: TStrings; const Email: string);
 function  Inbox_GetNthFor(const Email: string; AIndex: Integer): PMailNode; // 1-based
 function  Inbox_RemoveNode(Node: PMailNode; out AId, ARem, ADest, AAsunto, AFecha, AMsg, AEstado: string): boolean;
 function  Inbox_CountFor(const Email: string): Integer;
+function Inbox_CountReadFor(const Destinatario: string): Integer;
+function Inbox_LoadFromFile(const AFile: string; out Loaded, Skipped: Integer): Boolean;
 {======================  PAPELERA: pila  =======================}
 
 type
@@ -83,8 +84,6 @@ function  Trash_Count: Integer;
 procedure Trash_ToStrings(const L: TStrings);
 function  Trash_RemoveAt(AIndex: Integer): boolean; // 1-based
 procedure Trash_ToStringsFiltered(const L: TStrings; const Filter: string);
-function  Trash_DeleteAt(AIndex1: Integer): boolean;
-function  Trash_FindByAsunto(const Term: string): Integer;
 
 
 {======================  CONTACTOS: lista circular =======================}
@@ -100,11 +99,17 @@ type
 
 var
   ContactsTail: PContactNode = nil; // sigue siendo una sola lista circular global
-
+type
+  TAddLineProc = procedure(const S: string) of object;
 procedure Contacts_Clear;
 function  Contacts_ExistsFor(const Owner, AEmail: string): boolean;
 function  Contacts_AddFor(const Owner, AEmail, ANombre: string): boolean; // False si ya existe
 procedure Contacts_ToStringsFor(const Owner: string; const L: TStrings);
+function Contacts_RemoveFor(const ownerEmail, contactEmail: string): Boolean;
+procedure Contacts_ForEachLine(const ownerEmail: string; const AddLine: TAddLineProc);
+
+
+
 
 {======================  PROGRAMADOS (cola)  ======================}
 
@@ -138,13 +143,90 @@ function Report_Inbox_DOT: string;
 function Report_Trash_DOT: string;
 function Report_Programados_DOT: string;
 function Report_Contactos_DOT: string;
+function Report_Borradores_DOT: string;
+function Report_Favoritos_DOT: string;
 
 procedure Relations_GenerateDot(const OutFile: string);
 function RootReportsDir: string;
 procedure Users_GenerateDot(const OutFile: string);
 
 implementation
+ // ---- Fallbacks seguros ----
+function ParseDateDef(const S: string; Def: TDateTime): TDateTime;
+var
+  FS: TFormatSettings;
+begin
+  // Esperamos "yyyy-mm-dd hh:nn" (si no, usamos Now)
+  FS := DefaultFormatSettings;
+  FS.DateSeparator := '-';
+  FS.TimeSeparator := ':';
+  FS.ShortDateFormat := 'yyyy-mm-dd';
+  FS.LongTimeFormat  := 'hh:nn';
+  if not TryStrToDateTime(S, Result, FS) then
+    Result := Def;
+end;
 
+// Split CSV seguro (usa SplitString si existe; si no, fallback)
+function SplitCSVLine(const L: string): TStringArray;
+var
+  p, startPos: SizeInt;
+  tmp: array of string;
+  s: string;
+begin
+  if @SplitString <> nil then
+    Exit(SplitString(L, ','));
+
+  SetLength(tmp, 0);
+  startPos := 1;
+  for p := 1 to Length(L) do
+    if L[p] = ',' then
+    begin
+      s := Copy(L, startPos, p - startPos);
+      SetLength(tmp, Length(tmp)+1);
+      tmp[High(tmp)] := s;
+      startPos := p + 1;
+    end;
+  s := Copy(L, startPos, MaxInt);
+  SetLength(tmp, Length(tmp)+1);
+  tmp[High(tmp)] := s;
+  Result := tmp;
+end;
+
+// Lee texto tolerante a claves en mayúsculas/minúsculas
+function JGetStrDef(d: TJSONData; const Keys: array of string; const Def: string): string;
+var
+  k: string; n: TJSONData;
+begin
+  for k in Keys do
+  begin
+    n := d.FindPath(k);
+    if (n = nil) and (Length(k) > 0) then
+      n := d.FindPath(UpperCase(k[1]) + Copy(k,2,MaxInt));
+    if (n <> nil) and (n.JSONType in [jtString, jtNumber, jtBoolean]) then
+      Exit(n.AsString);
+  end;
+  Result := Def;
+end;
+
+function JGetArray(d: TJSONData; const Keys: array of string): TJSONData;
+var
+  k: string; n: TJSONData;
+begin
+  for k in Keys do
+  begin
+    n := d.FindPath(k);
+    if (n <> nil) and (n.JSONType = jtArray) then Exit(n);
+  end;
+  Result := nil;
+end;
+
+
+// Id auto si viene vacío
+function EnsureId(const S: string): string;
+begin
+  if Trim(S) <> '' then Exit(S);
+  Result := FormatDateTime('yyyymmddhhnnsszzz', Now);
+end;
 {======================  USUARIOS  ======================}
 
 procedure UserList_Clear;
@@ -505,7 +587,6 @@ end;
 
 
 {======================  CONTACTOS (CIRCULAR)  ======================}
-
 procedure Contacts_Clear;
 var
   cur, start: PContactNode;
@@ -583,6 +664,57 @@ begin
   if idx = 1 then
     L.Add('(Sin contactos)');
 end;
+function Contacts_RemoveFor(const ownerEmail, contactEmail: string): Boolean;
+var
+  prev, cur, start: PContactNode;
+begin
+  Result := False;
+  if ContactsTail = nil then Exit;
+
+  // lista circular: tail->next es la “cabeza”
+  prev  := ContactsTail;
+  cur   := ContactsTail^.Next;
+  start := cur;
+
+  repeat
+    if SameText(cur^.Owner, ownerEmail) and SameText(cur^.Email, contactEmail) then
+    begin
+      // quitar nodo cur
+      prev^.Next := cur^.Next;
+
+      // si el que quitamos es el tail
+      if cur = ContactsTail then
+      begin
+        if cur^.Next = cur then
+          ContactsTail := nil                // era el único nodo
+        else
+          ContactsTail := prev;              // prev pasa a ser el nuevo tail
+      end;
+
+      Dispose(cur);
+      Exit(True);
+    end;
+
+    prev := cur;
+    cur  := cur^.Next;
+  until cur = start;
+end;
+
+procedure Contacts_ForEachLine(const ownerEmail: string; const AddLine: TAddLineProc);
+var
+  cur, start: PContactNode;
+begin
+  if (ContactsTail = nil) or (not Assigned(AddLine)) then Exit;
+
+  start := ContactsTail^.Next;
+  cur   := start;
+  repeat
+    if SameText(cur^.Owner, ownerEmail) then
+      AddLine(Format('%s <%s>', [cur^.Nombre, cur^.Email])); // ajusta campos si difieren
+    cur := cur^.Next;
+  until cur = start;
+end;
+
 
 
 {======================  PROGRAMADOS (COLA)  ======================}
@@ -658,7 +790,7 @@ var
 begin
   // Carpeta junto al ejecutable: {usuario}-Reportes
   base := ExtractFilePath(ParamStr(0));
-  u := User_FindByEmail(CurrentUserEmail);
+  u := User_FindByEmail(Domain_GetCurrentUser);
   if u <> nil then usuario := u^.Usuario else usuario := 'usuario';
   dir := IncludeTrailingPathDelimiter(base) + usuario + '-Reportes';
   if not DirectoryExists(dir) then
@@ -910,6 +1042,161 @@ begin
     emails.Free;
   end;
 end;
+function Report_Borradores_DOT: string;
+var
+  sl: TStringList;
+
+  function Safe(const S: string): string;
+  begin
+    // escape de comillas y saltos a \l (left-justified) para Graphviz
+    Result := StringReplace(S, '"', '''', [rfReplaceAll]);
+    Result := StringReplace(Result, #13#10, '\l', [rfReplaceAll]);
+    Result := StringReplace(Result, #10, '\l', [rfReplaceAll]);
+  end;
+
+  procedure Walk(N: PAVL);
+  var
+    idStr, card: string;
+  begin
+    if N = nil then Exit;
+
+    idStr := 'n' + IntToStr(N^.Key);
+
+    // tarjeta con HTML-like label
+    card :=
+      '<' +
+      '<TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2" BGCOLOR="#FFFDE7">' +
+      '<TR><TD><B>ID:</B> ' + IntToStr(N^.Data.Id) + '</TD></TR>' +
+      '<TR><TD><B>Remitente:</B> ' + Safe(N^.Data.Remitente) + '</TD></TR>' +
+      '<TR><TD><B>Estado:</B> ' + 'no leído' + '</TD></TR>' + // si manejas estado, cámbialo aquí
+      '<TR><TD><B>Asunto:</B> ' + Safe(N^.Data.Asunto) + '</TD></TR>' +
+      '<TR><TD><B>Mensaje:</B> ' + Safe(N^.Data.Mensaje) + '\l</TD></TR>' +
+      '</TABLE>' +
+      '>';
+
+    sl.Add(Format('  %s [label=%s, shape=box, style="rounded,filled", fillcolor="#FFF9C4", fontname="Helvetica"];',
+      [idStr, card]));
+
+    if N^.L <> nil then
+    begin
+      sl.Add(Format('  %s -> n%d;', [idStr, N^.L^.Key]));
+      Walk(N^.L);
+    end;
+    if N^.R <> nil then
+    begin
+      sl.Add(Format('  %s -> n%d;', [idStr, N^.R^.Key]));
+      Walk(N^.R);
+    end;
+  end;
+
+var
+  outPath: string;
+begin
+  sl := TStringList.Create;
+  try
+    sl.Add('digraph "Reporte de Borradores (Árbol AVL)" {');
+    sl.Add('  rankdir=TB;');
+    sl.Add('  node [fontname="Helvetica"];');
+    sl.Add('  edge [color="#90A4AE"];');
+
+    if GlobalDrafts = nil then
+      sl.Add('  vacio [label="(sin borradores)"];')
+    else
+      Walk(GlobalDrafts);
+
+    sl.Add('}');
+
+    outPath := IncludeTrailingPathDelimiter(UserReportsDir) + 'borradores.dot';
+    sl.SaveToFile(outPath);
+    Result := outPath;
+  finally
+    sl.Free;
+  end;
+end;
+
+function Report_Favoritos_DOT: string;
+var
+  sl: TStringList;
+
+  function Safe(const S: string): string;
+  begin
+    Result := StringReplace(S, '"', '''', [rfReplaceAll]);
+    Result := StringReplace(Result, #13#10, '\l', [rfReplaceAll]);
+    Result := StringReplace(Result, #10, '\l', [rfReplaceAll]);
+  end;
+
+  function FavCard(const M: TMailFav): string;
+  begin
+    Result :=
+      '<' +
+      '<B>ID:</B> ' + IntToStr(M.Id) + '\l' +
+      '<B>De:</B> ' + Safe(M.Remitente) + '\l' +
+      '<B>Para:</B> ' + Safe(M.Destinatario) + '\l' +
+      '<B>Asunto:</B> ' + Safe(M.Asunto) + '\l' +
+      '<B>Fecha:</B> ' + Safe(M.Fecha) + '\l' +
+      '<B>Mensaje:</B> ' + Safe(M.Mensaje) + '\l' +
+      '>';
+  end;
+
+  procedure EmitBlocks(Head: PBNode);
+  var
+    idx, i: Integer;
+    cur: PBNode;
+    labelLine: string;
+  begin
+    if Head = nil then
+    begin
+      sl.Add('  vacio [label="(sin favoritos)"];');
+      Exit;
+    end;
+
+    idx := 0;
+    cur := Head;
+    while cur <> nil do
+    begin
+      Inc(idx);
+      labelLine := '';
+
+      // hasta 4 “celdas” por bloque
+      for i := 1 to cur^.Count do
+      begin
+        if i > 1 then
+          labelLine += '|';
+        labelLine += '{' + FavCard(cur^.Keys[i]) + '}';
+      end;
+
+      sl.Add(Format('  blk%d [label="{{%s}}", shape=record, style="filled", fillcolor="#A5D6A7", fontname="Helvetica"];',
+        [idx, labelLine]));
+
+      if cur^.Next <> nil then
+        sl.Add(Format('  blk%d -> blk%d;', [idx, idx + 1]));
+
+      cur := cur^.Next;
+    end;
+  end;
+
+var
+  outPath: string;
+begin
+  sl := TStringList.Create;
+  try
+    sl.Add('digraph BTree_Favoritos {');
+    sl.Add('  rankdir=TB;');
+    sl.Add('  node  [shape=record, style="filled", fillcolor="#A5D6A7", fontname="Helvetica"];');
+    sl.Add('  edge  [color="#90A4AE"];');
+
+    EmitBlocks(GlobalFavs);
+
+    sl.Add('}');
+
+    outPath := IncludeTrailingPathDelimiter(UserReportsDir) + 'favoritos.dot';
+    sl.SaveToFile(outPath);
+    Result := outPath;
+  finally
+    sl.Free;
+  end;
+end;
+
 function RootReportsDir: string;
 var
   base, dir: string;
@@ -1037,6 +1324,157 @@ begin
   u^.DemoSeeded := True;
 end;
 
+
+// RENOMBRADA para no chocar con la tuya
+function EnsureIdAuto(const S: string): string;
+begin
+  if Trim(S) <> '' then Exit(S);
+  Result := FormatDateTime('yyyymmddhhnnsszzz', Now);
+end;
+
+
+function Inbox_LoadFromJSON(const FN: string; out Loaded, Skipped: Integer): Boolean;
+var
+  root, arr, it: TJSONData;
+  i: Integer;
+  idS, remi, dest, asu, est, msg, fec: string;
+begin
+  Loaded := 0; Skipped := 0;
+  Result := False;
+  try
+    root := GetJSON(TFileStream.Create(FN, fmOpenRead or fmShareDenyNone), True);
+    try
+      if root.JSONType = jtArray then
+        arr := root
+      else
+        arr := JGetArray(root, ['Correos','correos']);
+      if arr = nil then Exit(False);
+
+      for i := 0 to arr.Count - 1 do
+      begin
+        it   := arr.Items[i];
+
+        idS  := JGetStrDef(it, ['Id','id'], '');
+        remi := Trim(JGetStrDef(it, ['Remitente','remitente'], ''));
+        dest := Trim(JGetStrDef(it, ['Destinatario','destinatario'], ''));
+        asu  := JGetStrDef(it, ['Asunto','asunto'], '');
+        msg  := JGetStrDef(it, ['Mensaje','mensaje'], '');
+        est  := UpperCase(Trim(JGetStrDef(it, ['Estado','estado'], 'NL')));
+        if (est='LEÍDO') or (est='LEIDO') or (est='L') then est := 'L' else est := 'NL';
+
+        if (remi='') or (dest='') then begin Inc(Skipped); Continue; end;
+        if (User_FindByEmail(remi)=nil) or (User_FindByEmail(dest)=nil) then begin Inc(Skipped); Continue; end;
+
+        fec := FormatDateTime('yyyy-mm-dd hh:nn', Now);
+        idS := EnsureIdAuto(idS);
+
+        // *** 6 parámetros ***
+        Inbox_PushBack(idS, remi, dest, asu, fec, msg);
+
+        Inc(Loaded);
+      end;
+      Result := True;
+    finally
+      root.Free;
+    end;
+  except
+    Result := False;
+  end;
+end;
+
+
+function Inbox_LoadFromCSV(const FN: string; out Loaded, Skipped: Integer): Boolean;
+var
+  SL: TStringList;
+  i: Integer;
+  L, idS, remi, dest, asu, fecS, msg, fec: string;
+  parts: TStringArray;
+begin
+  Loaded := 0; Skipped := 0;
+  Result := False;
+  SL := TStringList.Create;
+  try
+    SL.LoadFromFile(FN);
+    if SL.Count = 0 then Exit(True);
+
+    // Id,Remitente,Destinatario,Asunto,Fecha,Mensaje
+    i := 0;
+    if Pos('remitente', LowerCase(SL[0])) > 0 then i := 1;
+
+    for i := i to SL.Count - 1 do
+    begin
+      L := Trim(SL[i]);
+      if L = '' then Continue;
+
+      parts := SplitCSVLine(L);
+      if Length(parts) < 3 then begin Inc(Skipped); Continue; end;
+
+      if Length(parts) < 6 then
+      begin
+        idS  := '';
+        remi := Trim(parts[0]);
+        dest := Trim(parts[1]);
+        asu  := parts[2];
+        fecS := '';
+        msg  := '';
+      end
+      else
+      begin
+        idS  := parts[0];
+        remi := Trim(parts[1]);
+        dest := Trim(parts[2]);
+        asu  := parts[3];
+        fecS := parts[4];
+        msg  := parts[5];
+      end;
+
+      if (remi='') or (dest='') then begin Inc(Skipped); Continue; end;
+      if (User_FindByEmail(remi)=nil) or (User_FindByEmail(dest)=nil) then begin Inc(Skipped); Continue; end;
+
+      idS := EnsureIdAuto(idS);
+      fec := FormatDateTime('yyyy-mm-dd hh:nn', ParseDateDef(fecS, Now));
+
+      // *** 6 parámetros ***
+      Inbox_PushBack(idS, remi, dest, asu, fec, msg);
+
+      Inc(Loaded);
+    end;
+
+    Result := True;
+  finally
+    SL.Free;
+  end;
+end;
+
+
+function Inbox_LoadFromFile(const AFile: string; out Loaded, Skipped: Integer): Boolean;
+var
+  ext: string;
+begin
+  ext := LowerCase(ExtractFileExt(AFile));
+  if (ext = '.json') then
+    Result := Inbox_LoadFromJSON(AFile, Loaded, Skipped)
+  else
+    Result := Inbox_LoadFromCSV(AFile, Loaded, Skipped);
+end;
+function Inbox_CountReadFor(const Destinatario: string): Integer;
+var
+  cur: PMailNode;
+  cnt: Integer;
+  who: string;
+begin
+  who := LowerCase(Trim(Destinatario));
+  cnt := 0;
+  cur := InboxHead;
+  while cur <> nil do
+  begin
+    if SameText(cur^.Destinatario, who) and SameText(cur^.Estado, 'L')then
+    Inc(cnt);
+    cur := cur^.Next;
+    end;
+  Result := cnt;
+  end;
+end
 
 
 

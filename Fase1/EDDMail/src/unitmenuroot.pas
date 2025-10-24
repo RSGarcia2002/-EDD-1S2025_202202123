@@ -12,19 +12,23 @@ type
   { TFormMenuRoot }
 
   TFormMenuRoot = class(TForm)
-    btnCargaMasiva: TButton;
+    btnCargaUsuarios: TButton;
     btnReporteUsuarios: TButton;
     btnReporteRelaciones: TButton;
     btnCerrarSesion: TButton;
     btnComuCrear: TButton;
     btnComuAgregarUsuario: TButton;
     btnComuReporte: TButton;
+    btnCargaCorreos: TButton;
+    btnComunidades: TButton;
     procedure btnCerrarSesionClick(Sender: TObject);
     procedure btnComuCrearClick(Sender: TObject);
+    procedure btnComunidadesClick(Sender: TObject);
     procedure btnComuReporteClick(Sender: TObject);
     procedure btnComuAgregarUsuarioClick(Sender: TObject);
+    procedure btnCargaCorreosClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure btnCargaMasivaClick(Sender: TObject);
+    procedure btnCargaUsuariosClick(Sender: TObject);
     procedure btnReporteUsuariosClick(Sender: TObject);
     procedure btnReporteRelacionesClick(Sender: TObject);
   private
@@ -35,12 +39,13 @@ implementation
 
 {$R *.lfm}
 
-uses Dialogs, UJSONLoader, UReportes, UDataCore, UComunidades, UComunidadesAdapters ;
+uses Dialogs, UJSONLoader, UReportes, UDataCore, UComunidades, UComunidadesAdapters,UDomain, UnitComMensajes ;
 
 
 
 procedure TFormMenuRoot.btnCerrarSesionClick(Sender: TObject);
 begin
+  Domain_ClearCurrentUser;
   ModalResult := mrClose;
 end;
 
@@ -60,6 +65,14 @@ begin
     MessageDlg('Ya existe una comunidad con ese nombre.', mtWarning, [mbOK], 0);
 end;
 
+procedure TFormMenuRoot.btnComunidadesClick(Sender: TObject);
+begin
+  if not Assigned(FormComMensajes) then
+  Application.CreateForm(TFormComMensajes, FormComMensajes);
+FormComMensajes.Position := poScreenCenter;
+FormComMensajes.ShowModal;
+end;
+
 
 procedure TFormMenuRoot.btnComuReporteClick(Sender: TObject);
 var
@@ -67,6 +80,7 @@ var
 begin
   dir     := RootReportsDir; // helper que ya tienes
   ExportarReporteComunidadesDOT(dir); // genera Root-Reportes/Reporte_Comunidades.dot
+
 
   // (opcional) si tienes Graphviz, intentar PNG
   dotFile := IncludeTrailingPathDelimiter(dir) + 'Reporte_Comunidades.dot';
@@ -106,15 +120,42 @@ begin
                mtWarning, [mbOK], 0);
 end;
 
-procedure TFormMenuRoot.btnCargaMasivaClick(Sender: TObject);
+procedure TFormMenuRoot.btnCargaCorreosClick(Sender: TObject);
+var
+  dlg: TOpenDialog;
+  ok: Boolean;
+  nOK, nBad: Integer;
+begin
+  dlg := TOpenDialog.Create(Self);
+  try
+    dlg.Title := 'Selecciona archivo de CORREOS (JSON o CSV)';
+    dlg.Filter := 'Archivos JSON|*.json|Archivos CSV|*.csv|Todos|*.*';
+    dlg.Options := dlg.Options + [ofFileMustExist];
+    if not dlg.Execute then Exit;
+
+    ok := Inbox_LoadFromFile(dlg.FileName, nOK, nBad);
+
+    if not ok then
+      MessageDlg('Error al procesar correos.', mtError, [mbOK], 0)
+    else
+      MessageDlg(Format('Correos cargados: %d'#13#10'Correos omitidos: %d', [nOK, nBad]),
+                 mtInformation, [mbOK], 0);
+  finally
+    dlg.Free;
+  end;
+end;
+
+procedure TFormMenuRoot.btnCargaUsuariosClick(Sender: TObject);
 var folder, resumen: string;
 begin
   if SelectDirectory('Selecciona la carpeta con users.json', '', folder) then
   begin
-    resumen := CargarMasivaDesdeCarpeta(folder);
+    resumen := CargarMasivaDesdeCarpeta(folder); // ← tu función actual (usuarios)
     MessageDlg('Resultado Carga Masiva', resumen, mtInformation, [mbOK], 0);
   end;
 end;
+
+
 
 procedure TFormMenuRoot.btnReporteUsuariosClick(Sender: TObject);
 var dot, png, msg: string;

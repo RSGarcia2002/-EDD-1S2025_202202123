@@ -8,6 +8,7 @@ object FormCrearCuenta: TFormCrearCuenta
   ClientWidth = 352
   Position = poScreenCenter
   LCLVersion = '4.2.0.0'
+  OnCreate = FormCreate
   object lblNombre: TLabel
     Left = 40
     Height = 15

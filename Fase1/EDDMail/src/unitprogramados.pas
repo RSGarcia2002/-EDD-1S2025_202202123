@@ -33,7 +33,7 @@ implementation
 
 {$R *.lfm}
 
-uses UDataCore, UnitBandeja;
+uses UDataCore, UnitBandeja, UDomain;
 
 procedure TFormProgramados.Cargar;
 begin
@@ -77,7 +77,7 @@ begin
   Prog_SendAllNow;
   Cargar;
   if Assigned(FormBandeja) then
-    Inbox_ToStringsFor(FormBandeja.lbBandeja.Items, CurrentUserEmail);
+    Inbox_ToStringsFor(FormBandeja.lbBandeja.Items, Domain_GetCurrentUser);
 
   MessageDlg('Programados enviados (simulación).', mtInformation, [mbOK], 0);
 end;

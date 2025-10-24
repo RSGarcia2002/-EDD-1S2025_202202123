@@ -126,7 +126,7 @@ begin
     Trash_ToStringsFiltered(lbPapelera.Items, edtBuscar.Text);
 
   if Assigned(FormBandeja) then
-    Inbox_ToStrings(FormBandeja.lbBandeja.Items);
+    Inbox_ToStringsFor(FormBandeja.lbBandeja.Items, CurrentUserEmail);
 end;
 
 end.

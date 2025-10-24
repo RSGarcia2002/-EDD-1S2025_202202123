@@ -65,16 +65,21 @@ end;
 
 procedure TFormProgramados.btnEnviarAhoraClick(Sender: TObject);
 begin
-  if Prog_Count=0 then
+  if Prog_Count = 0 then
   begin
     MessageDlg('No hay correos programados.', mtInformation,[mbOK],0);
     Exit;
   end;
+
+  // (opcional) si tu envío individual lee el destinatario, valida:
+  // if not Contacts_ExistsFor(CurrentUserEmail, Destinatario) then ...
+
   Prog_SendAllNow;
   Cargar;
   if Assigned(FormBandeja) then
-    Inbox_ToStringsFor(FormBandeja.lbBandeja.Items, CurrentUserEmail);
-  MessageDlg('Programados enviados (simulación).', mtInformation,[mbOK],0);
+    Inbox_ToStringsFor(FormBandeja.lbBandeja.Items, Domain_GetCurrentUser);
+
+  MessageDlg('Programados enviados (simulación).', mtInformation, [mbOK], 0);
 end;
 
 procedure TFormProgramados.lbProgramadosClick(Sender: TObject);

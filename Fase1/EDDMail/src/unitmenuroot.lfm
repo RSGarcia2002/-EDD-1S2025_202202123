@@ -1,37 +1,37 @@
 object FormMenuRoot: TFormMenuRoot
-  Left = 39
-  Height = 333
-  Top = 242
+  Left = 515
+  Height = 368
+  Top = 146
   Width = 320
   Caption = 'FormMenuRoot'
-  ClientHeight = 333
+  ClientHeight = 368
   ClientWidth = 320
   Position = poScreenCenter
   LCLVersion = '4.2.0.0'
   OnCreate = FormCreate
-  object btnCargaMasiva: TButton
-    Left = 96
+  object btnCargaUsuarios: TButton
+    Left = 80
     Height = 25
-    Top = 56
-    Width = 120
-    Caption = 'Carga Masiva'
+    Top = 48
+    Width = 152
+    Caption = 'Carga Usuarios'
     TabOrder = 0
-    OnClick = btnCargaMasivaClick
+    OnClick = btnCargaUsuariosClick
   end
   object btnReporteUsuarios: TButton
-    Left = 96
+    Left = 80
     Height = 25
-    Top = 103
-    Width = 120
+    Top = 128
+    Width = 152
     Caption = 'Reporte Usuario'
     TabOrder = 1
     OnClick = btnReporteUsuariosClick
   end
   object btnReporteRelaciones: TButton
-    Left = 96
+    Left = 80
     Height = 25
-    Top = 152
-    Width = 120
+    Top = 168
+    Width = 152
     Caption = 'Reporte Relaciones'
     TabOrder = 2
     OnClick = btnReporteRelacionesClick
@@ -46,10 +46,10 @@ object FormMenuRoot: TFormMenuRoot
     OnClick = btnCerrarSesionClick
   end
   object btnComuCrear: TButton
-    Left = 93
+    Left = 80
     Height = 25
-    Top = 200
-    Width = 123
+    Top = 208
+    Width = 152
     Caption = 'Crear Comunidad'
     TabOrder = 4
     OnClick = btnComuCrearClick
@@ -64,12 +64,30 @@ object FormMenuRoot: TFormMenuRoot
     OnClick = btnComuAgregarUsuarioClick
   end
   object btnComuReporte: TButton
-    Left = 80
+    Left = 85
     Height = 25
-    Top = 279
+    Top = 304
     Width = 147
     Caption = 'Reporte Comunidades'
     TabOrder = 6
     OnClick = btnComuReporteClick
+  end
+  object btnCargaCorreos: TButton
+    Left = 80
+    Height = 25
+    Top = 88
+    Width = 152
+    Caption = 'Carga Correos'
+    TabOrder = 7
+    OnClick = btnCargaCorreosClick
+  end
+  object btnComunidades: TButton
+    Left = 80
+    Height = 25
+    Top = 272
+    Width = 152
+    Caption = 'Ver/Publicar Comunidad'
+    TabOrder = 8
+    OnClick = btnComunidadesClick
   end
 end

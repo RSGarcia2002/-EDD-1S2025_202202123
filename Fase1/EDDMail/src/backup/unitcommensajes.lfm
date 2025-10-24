@@ -1,0 +1,94 @@
+object FormComMensajes: TFormComMensajes
+  Left = 330
+  Height = 467
+  Top = 177
+  Width = 563
+  Caption = 'Comunidad Mensajes'
+  ClientHeight = 467
+  ClientWidth = 563
+  LCLVersion = '4.2.0.0'
+  object lstMensajes: TListBox
+    Left = 48
+    Height = 144
+    Top = 48
+    Width = 204
+    ItemHeight = 0
+    TabOrder = 0
+    OnClick = lstMensajesClick
+  end
+  object memMensajes: TMemo
+    Left = 296
+    Height = 144
+    Top = 48
+    Width = 206
+    Lines.Strings = (
+      'memMensajes'
+    )
+    TabOrder = 1
+  end
+  object memNuevo: TMemo
+    Left = 160
+    Height = 120
+    Top = 248
+    Width = 224
+    Lines.Strings = (
+      'memNuevo'
+    )
+    TabOrder = 2
+  end
+  object Label1: TLabel
+    Left = 128
+    Height = 15
+    Top = 18
+    Width = 49
+    Caption = 'Mensajes'
+  end
+  object Label2: TLabel
+    Left = 374
+    Height = 15
+    Top = 16
+    Width = 63
+    Caption = 'Ver Mensaje'
+  end
+  object Label3: TLabel
+    Left = 232
+    Height = 15
+    Top = 216
+    Width = 85
+    Caption = 'Escribir Mensaje'
+  end
+  object btnPublicar: TButton
+    Left = 240
+    Height = 25
+    Top = 375
+    Width = 75
+    Caption = 'Publicar'
+    TabOrder = 3
+    OnClick = btnPublicarClick
+  end
+  object btnRefrescar: TButton
+    Left = 160
+    Height = 25
+    Top = 411
+    Width = 75
+    Caption = 'Refrescar'
+    TabOrder = 4
+    OnClick = btnRefrescarClick
+  end
+  object btnCerrar: TButton
+    Left = 320
+    Height = 25
+    Top = 411
+    Width = 75
+    Caption = 'Cerrar'
+    TabOrder = 5
+    OnClick = btnCerrarClick
+  end
+  object lblEstado: TLabel
+    Left = 244
+    Height = 15
+    Top = 16
+    Width = 35
+    Caption = 'Estado'
+  end
+end

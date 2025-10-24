@@ -1,0 +1,80 @@
+object FormInbox: TFormInbox
+  Left = 1868
+  Height = 279
+  Top = 97
+  Width = 495
+  Caption = 'Inbox'
+  ClientHeight = 279
+  ClientWidth = 495
+  LCLVersion = '4.2.0.0'
+  OnShow = FormShow
+  object lstInbox: TListBox
+    Left = 32
+    Height = 152
+    Top = 48
+    Width = 192
+    ItemHeight = 0
+    TabOrder = 0
+    OnClick = lstInboxClick
+  end
+  object memDetalle: TMemo
+    Left = 272
+    Height = 154
+    Top = 48
+    Width = 182
+    Lines.Strings = (
+      'memDetalle'
+    )
+    TabOrder = 1
+  end
+  object btnRefrescar: TButton
+    Left = 72
+    Height = 25
+    Top = 216
+    Width = 75
+    Caption = 'Refrescar'
+    TabOrder = 2
+    OnClick = btnRefrescarClick
+  end
+  object btnFavorito: TButton
+    Left = 192
+    Height = 25
+    Top = 216
+    Width = 75
+    Caption = 'Favorito'
+    TabOrder = 3
+    OnClick = btnFavoritoClick
+  end
+  object btnCerrar: TButton
+    Left = 326
+    Height = 25
+    Top = 216
+    Width = 75
+    Caption = 'Cerrar'
+    TabOrder = 4
+    OnClick = btnCerrarClick
+  end
+  object LabelLista: TLabel
+    Left = 112
+    Height = 15
+    Top = 16
+    Width = 24
+    Caption = 'Lista'
+  end
+  object LabelDetalle: TLabel
+    Left = 344
+    Height = 15
+    Top = 16
+    Width = 36
+    Caption = 'Detalle'
+  end
+  object btnDemo: TButton
+    Left = 192
+    Height = 25
+    Top = 248
+    Width = 75
+    Caption = 'btnDemo'
+    TabOrder = 5
+    OnClick = btnDemoClick
+  end
+end

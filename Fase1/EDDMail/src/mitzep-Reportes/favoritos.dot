@@ -1,0 +1,6 @@
+digraph BTree_Favoritos {
+  rankdir=TB;
+  node  [shape=record, style="filled", fillcolor="#A5D6A7", fontname="Helvetica"];
+  edge  [color="#90A4AE"];
+  blk1 [label="{{{<<B>ID:</B> 1\l<B>De:</B> lgarcia@edd.com\l<B>Para:</B> mitzep@edd.com\l<B>Asunto:</B> Reunión de proyecto\l<B>Fecha:</B> 2025-10-11 14:00\l<B>Mensaje:</B> Confirmar asistencia a la reunión de equipo del lunes.\l>}|{<<B>ID:</B> 2\l<B>De:</B> lgarcia@edd.com\l<B>Para:</B> mitzep@edd.com\l<B>Asunto:</B> Reporte semanal\l<B>Fecha:</B> 2025-10-11 14:00\l<B>Mensaje:</B> Adjunto el reporte semanal de actividades del área de desarrollo.\l>}|{<<B>ID:</B> 21\l<B>De:</B> jcorbet@edd.com\l<B>Para:</B> mitzep@edd.com\l<B>Asunto:</B> Artículo técnico\l<B>Fecha:</B> 2025-10-11 14:00\l<B>Mensaje:</B> He publicado un artículo sobre el nuevo scheduler, te puede interesar.\l>}}}", shape=record, style="filled", fillcolor="#A5D6A7", fontname="Helvetica"];
+}

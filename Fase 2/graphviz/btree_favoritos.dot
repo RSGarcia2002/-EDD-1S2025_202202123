@@ -1,5 +1,8 @@
-digraph BTree_Favoritos { node [shape=record, fillcolor="#FFF3E0", style=filled]; rankdir=TB;
-  "blk1" [label="105"];
-  "blk1" -> "blk2";
-  "blk2" [label="101|102|103|104"];
+digraph BTree_Favoritos {
+  rankdir=TB;
+  node [shape=plaintext, fontname="Helvetica"];
+  edge [color="#90A4AE"];
+  blk1 [label=<<TABLE BORDER="1" CELLBORDER="1" CELLPADDING="6" BGCOLOR="#A5D6A7"><TR><TD ALIGN="LEFT" BALIGN="LEFT"><B>ID:</B> 1<BR ALIGN="LEFT"/><B>De:</B> lgarcia@edd.com<BR ALIGN="LEFT"/><B>Para:</B> mitzep@edd.com<BR ALIGN="LEFT"/><B>Asunto:</B> Reunión de proyecto<BR ALIGN="LEFT"/><B>Fecha:</B> 2025-10-11 14:00<BR ALIGN="LEFT"/><B>Mensaje:</B> Confirmar asistencia a la reunión de equipo del lunes.</TD>
+<TD ALIGN="LEFT" BALIGN="LEFT"><B>ID:</B> 2<BR ALIGN="LEFT"/><B>De:</B> lgarcia@edd.com<BR ALIGN="LEFT"/><B>Para:</B> mitzep@edd.com<BR ALIGN="LEFT"/><B>Asunto:</B> Reporte semanal<BR ALIGN="LEFT"/><B>Fecha:</B> 2025-10-11 14:00<BR ALIGN="LEFT"/><B>Mensaje:</B> Adjunto el reporte semanal de actividades del área de desarrollo.</TD>
+<TD ALIGN="LEFT" BALIGN="LEFT"><B>ID:</B> 21<BR ALIGN="LEFT"/><B>De:</B> jcorbet@edd.com<BR ALIGN="LEFT"/><B>Para:</B> mitzep@edd.com<BR ALIGN="LEFT"/><B>Asunto:</B> Artículo técnico<BR ALIGN="LEFT"/><B>Fecha:</B> 2025-10-11 14:00<BR ALIGN="LEFT"/><B>Mensaje:</B> He publicado un artículo sobre el nuevo scheduler, te puede interesar.</TD></TR></TABLE>>];
 }

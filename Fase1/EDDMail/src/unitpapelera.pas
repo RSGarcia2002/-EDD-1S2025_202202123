@@ -36,7 +36,7 @@ implementation
 {$R *.lfm}
 
 uses
-  UDataCore, UnitBandeja;
+  UDataCore, UnitBandeja, UDomain;
 
 procedure TFormPapelera.CargarLista;
 begin
@@ -126,7 +126,7 @@ begin
     Trash_ToStringsFiltered(lbPapelera.Items, edtBuscar.Text);
 
   if Assigned(FormBandeja) then
-    Inbox_ToStringsFor(FormBandeja.lbBandeja.Items, CurrentUserEmail);
+    Inbox_ToStringsFor(FormBandeja.lbBandeja.Items, Domain_GetCurrentUser);
 end;
 
 end.

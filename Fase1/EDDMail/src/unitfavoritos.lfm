@@ -1,0 +1,81 @@
+object FormFavoritos: TFormFavoritos
+  Left = 2424
+  Height = 348
+  Top = 469
+  Width = 604
+  Caption = 'FormFavoritos'
+  ClientHeight = 348
+  ClientWidth = 604
+  LCLVersion = '4.2.0.0'
+  OnShow = FormShow
+  object LabelLista: TLabel
+    Left = 88
+    Height = 15
+    Top = 24
+    Width = 51
+    Caption = 'Favoritos '
+    WordWrap = True
+  end
+  object lbFavs: TListBox
+    Left = 16
+    Height = 160
+    Top = 64
+    Width = 224
+    ItemHeight = 0
+    TabOrder = 0
+    OnClick = lbFavsClick
+  end
+  object LabelDetalle: TLabel
+    Left = 410
+    Height = 15
+    Top = 35
+    Width = 36
+    Caption = 'Detalle'
+  end
+  object memDetalle: TMemo
+    Left = 296
+    Height = 160
+    Top = 64
+    Width = 270
+    Lines.Strings = (
+      'memDetalle'
+    )
+    TabOrder = 1
+  end
+  object btnRefrescar: TButton
+    Left = 24
+    Height = 25
+    Top = 248
+    Width = 123
+    Caption = 'Refrescar'
+    TabOrder = 2
+    OnClick = btnRefrescarClick
+  end
+  object btnExportarReporte: TButton
+    Left = 208
+    Height = 25
+    Top = 248
+    Width = 152
+    Caption = 'Exportar Reporte'
+    TabOrder = 3
+    OnClick = btnExportarReporteClick
+  end
+  object btnCerrar: TButton
+    Left = 440
+    Height = 25
+    Top = 248
+    Width = 101
+    Caption = 'Cerrar'
+    TabOrder = 4
+    OnClick = btnCerrarClick
+  end
+  object btnEliminar: TButton
+    Left = 24
+    Height = 25
+    Top = 288
+    Width = 126
+    Caption = 'Eliminar '
+    TabOrder = 5
+    OnClick = btnEliminarClick
+  end
+end

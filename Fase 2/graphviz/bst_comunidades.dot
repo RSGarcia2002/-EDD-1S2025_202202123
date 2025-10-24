@@ -1,5 +1,0 @@
-digraph BST_Comunidades { node [shape=record, fillcolor="#F3E5F5", style=filled];
-  "Frontend" [label="Frontend | 3/10/2025 20:16:56 | 0 msg"];
-  "Frontend" -> "Backend";
-  "Backend" [label="Backend | 3/10/2025 20:16:56 | 0 msg"];
-}

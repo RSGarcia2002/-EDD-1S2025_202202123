@@ -1,0 +1,57 @@
+object FormBorradoresVista: TFormBorradoresVista
+  Left = 1908
+  Height = 284
+  Top = 560
+  Width = 752
+  Caption = 'Borradores'
+  ClientHeight = 284
+  ClientWidth = 752
+  LCLVersion = '4.2.0.0'
+  OnShow = FormShow
+  object lstBorradores: TListBox
+    Left = 32
+    Height = 160
+    Top = 8
+    Width = 300
+    ItemHeight = 0
+    TabOrder = 0
+    OnClick = lstBorradoresClick
+  end
+  object memDatalle: TMemo
+    Left = 376
+    Height = 160
+    Top = 8
+    Width = 320
+    Lines.Strings = (
+      'memDatalle'
+    )
+    TabOrder = 1
+  end
+  object btnRefrescar: TButton
+    Left = 128
+    Height = 25
+    Top = 200
+    Width = 75
+    Caption = 'Refrescar'
+    TabOrder = 2
+    OnClick = btnRefrescarClick
+  end
+  object btnExportarReporte: TButton
+    Left = 296
+    Height = 25
+    Top = 200
+    Width = 75
+    Caption = 'Exportar Reporte'
+    TabOrder = 3
+    OnClick = btnExportarReporteClick
+  end
+  object btnCerrar: TButton
+    Left = 504
+    Height = 25
+    Top = 200
+    Width = 75
+    Caption = 'Cerrar'
+    TabOrder = 4
+    OnClick = btnCerrarClick
+  end
+end

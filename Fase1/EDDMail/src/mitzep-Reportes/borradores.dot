@@ -1,0 +1,14 @@
+digraph "Reporte de Borradores (Árbol AVL)" {
+  rankdir=TB;
+  node [fontname="Helvetica"];
+  edge [color="#90A4AE"];
+  n2 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2" BGCOLOR="#FFFDE7"><TR><TD><B>ID:</B> 2</TD></TR><TR><TD><B>Remitente:</B> </TD></TR><TR><TD><B>Estado:</B> no leído</TD></TR><TR><TD><B>Asunto:</B> Borrador 2</TD></TR><TR><TD><B>Mensaje:</B> borrador 2\l\l</TD></TR></TABLE>>, shape=box, style="rounded,filled", fillcolor="#FFF9C4", fontname="Helvetica"];
+  n2 -> n1;
+  n1 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2" BGCOLOR="#FFFDE7"><TR><TD><B>ID:</B> 1</TD></TR><TR><TD><B>Remitente:</B> </TD></TR><TR><TD><B>Estado:</B> no leído</TD></TR><TR><TD><B>Asunto:</B> Borrador 1</TD></TR><TR><TD><B>Mensaje:</B> borrador 1\l\l</TD></TR></TABLE>>, shape=box, style="rounded,filled", fillcolor="#FFF9C4", fontname="Helvetica"];
+  n2 -> n4;
+  n4 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2" BGCOLOR="#FFFDE7"><TR><TD><B>ID:</B> 4</TD></TR><TR><TD><B>Remitente:</B> </TD></TR><TR><TD><B>Estado:</B> no leído</TD></TR><TR><TD><B>Asunto:</B> Borrador 4</TD></TR><TR><TD><B>Mensaje:</B> borrador 4\l</TD></TR></TABLE>>, shape=box, style="rounded,filled", fillcolor="#FFF9C4", fontname="Helvetica"];
+  n4 -> n3;
+  n3 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2" BGCOLOR="#FFFDE7"><TR><TD><B>ID:</B> 3</TD></TR><TR><TD><B>Remitente:</B> </TD></TR><TR><TD><B>Estado:</B> no leído</TD></TR><TR><TD><B>Asunto:</B> Borrador 3</TD></TR><TR><TD><B>Mensaje:</B> borrador 3\l</TD></TR></TABLE>>, shape=box, style="rounded,filled", fillcolor="#FFF9C4", fontname="Helvetica"];
+  n4 -> n5;
+  n5 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2" BGCOLOR="#FFFDE7"><TR><TD><B>ID:</B> 5</TD></TR><TR><TD><B>Remitente:</B> </TD></TR><TR><TD><B>Estado:</B> no leído</TD></TR><TR><TD><B>Asunto:</B> Borrador 6</TD></TR><TR><TD><B>Mensaje:</B> borrador 6\l</TD></TR></TABLE>>, shape=box, style="rounded,filled", fillcolor="#FFF9C4", fontname="Helvetica"];
+}

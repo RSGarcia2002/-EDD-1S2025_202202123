@@ -8,18 +8,26 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls;
 
 type
+
+  { TFormReportesUsuario }
+
   TFormReportesUsuario = class(TForm)
+    btnCerrar: TButton;
     btnCorreos: TButton;
     btnPapelera: TButton;
     btnProgramados: TButton;
     btnContactos: TButton;
     btnAbrirCarpeta: TButton;
+    btnReporteBorradores: TButton;
+    btnReporteFavoritos: TButton;
     procedure btnAbrirCarpetaClick(Sender: TObject);
     procedure btnContactosClick(Sender: TObject);
     procedure btnCorreosClick(Sender: TObject);
     procedure btnPapeleraClick(Sender: TObject);
     procedure btnProgramadosClick(Sender: TObject);
     procedure btnCerrarClick(Sender: TObject);
+    procedure btnReporteBorradoresClick(Sender: TObject);
+    procedure btnReporteFavoritosClick(Sender: TObject);
   private
     procedure AvisoOk(const PathDot: string);
   public
@@ -70,6 +78,16 @@ end;
 procedure TFormReportesUsuario.btnCerrarClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TFormReportesUsuario.btnReporteBorradoresClick(Sender: TObject);
+begin
+  AvisoOk(Report_Borradores_DOT);
+end;
+
+procedure TFormReportesUsuario.btnReporteFavoritosClick(Sender: TObject);
+begin
+  AvisoOk(Report_Favoritos_DOT);
 end;
 
 end.

@@ -1,0 +1,93 @@
+object FormBorradoresVista: TFormBorradoresVista
+  Left = 2081
+  Height = 353
+  Top = 326
+  Width = 752
+  Caption = 'Borradores'
+  ClientHeight = 353
+  ClientWidth = 752
+  LCLVersion = '4.2.0.0'
+  OnCreate = FormCreate
+  OnShow = FormShow
+  object lstBorradores: TListBox
+    Left = 32
+    Height = 160
+    Top = 48
+    Width = 300
+    ItemHeight = 0
+    TabOrder = 0
+  end
+  object memDetalle: TMemo
+    Left = 376
+    Height = 160
+    Top = 48
+    Width = 320
+    Lines.Strings = (
+      'memDatalle'
+    )
+    TabOrder = 1
+  end
+  object btnRefrescar: TButton
+    Left = 144
+    Height = 25
+    Top = 304
+    Width = 75
+    Caption = 'Refrescar'
+    TabOrder = 2
+  end
+  object btnExportarReporte: TButton
+    Left = 280
+    Height = 25
+    Top = 304
+    Width = 152
+    Caption = 'Exportar Reporte'
+    TabOrder = 3
+  end
+  object btnCerrar: TButton
+    Left = 488
+    Height = 25
+    Top = 304
+    Width = 75
+    Caption = 'Cerrar'
+    TabOrder = 4
+  end
+  object btnPreOrden: TButton
+    Left = 200
+    Height = 25
+    Top = 224
+    Width = 75
+    Caption = 'Pre-Orden'
+    TabOrder = 5
+  end
+  object btnInOrden: TButton
+    Left = 320
+    Height = 25
+    Top = 224
+    Width = 75
+    Caption = 'In-Orden'
+    TabOrder = 6
+  end
+  object btnPostOrden: TButton
+    Left = 440
+    Height = 25
+    Top = 224
+    Width = 75
+    Caption = 'Post-Orden'
+    TabOrder = 7
+  end
+  object lblEstado: TLabel
+    Left = 152
+    Height = 1
+    Top = 19
+    Width = 1
+  end
+  object btnEnviar: TButton
+    Left = 288
+    Height = 25
+    Top = 264
+    Width = 139
+    Caption = 'Enviar Borrador'
+    TabOrder = 8
+    OnClick = btnEnviarClick
+  end
+end

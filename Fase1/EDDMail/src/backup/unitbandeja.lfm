@@ -1,46 +1,77 @@
 object FormBandeja: TFormBandeja
-  Left = 1511
-  Height = 328
-  Top = 180
-  Width = 320
+  Left = 1595
+  Height = 364
+  Top = 174
+  Width = 556
   Caption = 'FormBandeja'
-  ClientHeight = 328
-  ClientWidth = 320
+  ClientHeight = 364
+  ClientWidth = 556
+  Position = poScreenCenter
   LCLVersion = '4.2.0.0'
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
   object lbBandeja: TListBox
     Left = 48
     Height = 176
-    Top = 16
+    Top = 80
     Width = 212
     ItemHeight = 0
     TabOrder = 0
+    OnClick = lbBandejaClick
     OnDblClick = lbBandejaDblClick
   end
   object btnCerrar: TButton
-    Left = 32
+    Left = 312
     Height = 25
-    Top = 264
-    Width = 75
+    Top = 312
+    Width = 192
     Caption = 'Cerrar'
     TabOrder = 1
     OnClick = btnCerrarClick
   end
   object btnEliminar: TButton
-    Left = 185
+    Left = 176
     Height = 25
-    Top = 264
-    Width = 75
+    Top = 312
+    Width = 83
     Caption = 'Eliminar'
     TabOrder = 2
     OnClick = btnEliminarClick
   end
   object btnOrdenar: TButton
-    Left = 72
+    Left = 48
     Height = 25
-    Top = 208
-    Width = 155
+    Top = 272
+    Width = 211
     Caption = 'Ordenar por Asunto'
     TabOrder = 3
     OnClick = btnOrdenarClick
+  end
+  object memDetalle: TMemo
+    Left = 304
+    Height = 178
+    Top = 80
+    Width = 208
+    Lines.Strings = (
+      'memDetalle'
+    )
+    TabOrder = 4
+  end
+  object btnFavorito: TButton
+    Left = 48
+    Height = 25
+    Top = 312
+    Width = 104
+    Caption = 'Agrega a favorito'
+    TabOrder = 5
+    OnClick = btnFavoritoClick
+  end
+  object lblNoLeidos: TLabel
+    Left = 240
+    Height = 15
+    Top = 32
+    Width = 62
+    Caption = 'No leidos: 0'
   end
 end

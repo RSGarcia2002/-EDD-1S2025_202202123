@@ -1,0 +1,6 @@
+digraph BTree_Favoritos {
+  rankdir=TB;
+  node  [shape=record, style="filled", fillcolor="#A5D6A7", fontname="Helvetica"];
+  edge  [color="#90A4AE"];
+  blk1 [label="{{{<<B>ID:</B> 20251011134540\l<B>De:</B> admin@edd.com\l<B>Para:</B> lgarcia@edd.com\l<B>Asunto:</B> Bienvenido a EDDMail\l<B>Fecha:</B> 2025-10-11 13:45\l<B>Mensaje:</B> ¡Hola! Este es un correo de bienvenida.\l>}|{<<B>ID:</B> 20251011134543\l<B>De:</B> soporte@edd.com\l<B>Para:</B> lgarcia@edd.com\l<B>Asunto:</B> Tu cuenta fue creada\l<B>Fecha:</B> 2025-10-11 13:45\l<B>Mensaje:</B> Prueba de bandeja inicial.\l>}|{<<B>ID:</B> 11\l<B>De:</B> imurdock@edd.com\l<B>Para:</B> lgarcia@edd.com\l<B>Asunto:</B> Felicitaciones\l<B>Fecha:</B> 2025-10-11 13:45\l<B>Mensaje:</B> Excelente trabajo en la implementación de la nueva funcionalidad.\l>}|{<<B>ID:</B> 25\l<B>De:</B> mshuttleworth@edd.com\l<B>Para:</B> lgarcia@edd.com\l<B>Asunto:</B> Actualización del roadmap\l<B>Fecha:</B> 2025-10-11 13:45\l<B>Mensaje:</B> He actualizado el roadmap del proyecto. Revisa la sección de entregas.\l>}}}", shape=record, style="filled", fillcolor="#A5D6A7", fontname="Helvetica"];
+}

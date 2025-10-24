@@ -39,13 +39,13 @@ implementation
 
 {$R *.lfm}
 
-uses UDataCore;
+uses UDataCore, UDomain;
 
 procedure TFormPerfil.CargarDatos;
 var
   u: PUserNode;
 begin
-  u := User_FindByEmail(CurrentUserEmail);
+  u := User_FindByEmail(Domain_GetCurrentUser);
   if u = nil then
   begin
     // Si esto aparece, CurrentUserEmail está vacío o no cargaste usuarios
@@ -87,7 +87,7 @@ procedure TFormPerfil.btnActualizarUsuarioClick(Sender: TObject);
 var
   u: PUserNode;
 begin
-  u := User_FindByEmail(CurrentUserEmail);
+  u := User_FindByEmail(Domain_GetCurrentUser);
   if u = nil then Exit;
 
   if Trim(edtUsuario.Text) = '' then
@@ -105,7 +105,7 @@ procedure TFormPerfil.btnActualizarTelefonoClick(Sender: TObject);
 var
   u: PUserNode;
 begin
-  u := User_FindByEmail(CurrentUserEmail);
+  u := User_FindByEmail(Domain_GetCurrentUser);
   if u = nil then Exit;
 
   if Trim(edtTelefono.Text) = '' then

@@ -100,6 +100,7 @@ object FormCrearCuenta: TFormCrearCuenta
     Width = 75
     Caption = 'Crear'
     TabOrder = 6
+    OnClick = btnCrearClick
   end
   object btnCancelar: TButton
     Left = 192
@@ -108,5 +109,6 @@ object FormCrearCuenta: TFormCrearCuenta
     Width = 75
     Caption = 'Cancelar'
     TabOrder = 7
+    OnClick = btnCancelarClick
   end
 end

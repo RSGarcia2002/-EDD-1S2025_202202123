@@ -160,6 +160,60 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="UBST_Communities"/>
       </Unit>
+      <Unit>
+        <Filename Value="udomain.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uDomain"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\Fase 2\src\UDomain.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitborradores.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TFormBorradoresView"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="unitBorradores"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitborradoresvista.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormBorradoresVista"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitBorradoresVista"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uniteliminarcontacto.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormEliminarContacto"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitEliminarContacto"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitinbox.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormInbox"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitInbox"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitfavoritos.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormFavoritos"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitFavoritos"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unitcommensajes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormComMensajes"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitComMensajes"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -194,6 +248,9 @@
       </Item>
       <Item>
         <Name Value="EFOpenError"/>
+      </Item>
+      <Item>
+        <Name Value="EReadError"/>
       </Item>
     </Exceptions>
   </Debugging>

@@ -19,6 +19,7 @@ type
     procedure btnCorreosClick(Sender: TObject);
     procedure btnPapeleraClick(Sender: TObject);
     procedure btnProgramadosClick(Sender: TObject);
+    procedure btnCerrarClick(Sender: TObject);
   private
     procedure AvisoOk(const PathDot: string);
   public
@@ -65,6 +66,7 @@ begin
   // Abre la carpeta en el explorador
   OpenURL('file:///' + UserReportsDir);
 end;
+
 procedure TFormReportesUsuario.btnCerrarClick(Sender: TObject);
 begin
   Close;

@@ -11,7 +11,9 @@ uses
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, UnitLogin, UReportes, UnitPapelera, UnitContactos, UnitEnviarCorreo,
-  UnitPerfil, UnitCrearCuenta, UComunidades, UComunidadesAdapters, UBST_Communities;
+  UnitPerfil, UnitCrearCuenta, UComunidades, UComunidadesAdapters,
+  UBST_Communities, UnitBorradoresVista, UnitEliminarContacto, UnitInbox,
+  UnitFavoritos, UnitComMensajes ;
 
 {$R *.res}
 
@@ -23,6 +25,10 @@ begin
   {$POP}
   Application.Initialize;
   Application.CreateForm(TFormLogin, FormLogin);
+  Application.CreateForm(TFormEliminarContacto, FormEliminarContacto);
+  Application.CreateForm(TFormInbox, FormInbox);
+  Application.CreateForm(TFormFavoritos, FormFavoritos);
+  Application.CreateForm(TFormComMensajes, FormComMensajes);
   Application.Run;
 end.
 

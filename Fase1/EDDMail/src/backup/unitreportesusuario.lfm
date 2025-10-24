@@ -1,9 +1,9 @@
-object Form1: TForm1
-  Left = 1504
+object FormReportesUsuario: TFormReportesUsuario
+  Left = 560
   Height = 328
-  Top = 228
+  Top = 230
   Width = 320
-  Caption = 'Form1'
+  Caption = 'FormReportesUsuario'
   ClientHeight = 328
   ClientWidth = 320
   LCLVersion = '4.2.0.0'

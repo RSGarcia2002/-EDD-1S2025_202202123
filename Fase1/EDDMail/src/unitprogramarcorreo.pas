@@ -33,7 +33,7 @@ implementation
 
 {$R *.lfm}
 
-uses UDataCore;
+uses UDataCore, UDomain;
 
 procedure TFormProgramarCorreo.btnProgramarClick(Sender: TObject);
 var
@@ -53,7 +53,7 @@ begin
 
   // Debe existir y ser contacto DEL USUARIO ACTUAL
   u := User_FindByEmail(para);
-  if (u = nil) or (not Contacts_ExistsFor(CurrentUserEmail, para)) then
+  if (u = nil) or (not Contacts_ExistsFor(Domain_GetCurrentUser, para)) then
   begin
     MessageDlg('Solo puedes programar para correos que EXISTEN y son tu CONTACTO.', mtError,[mbOK],0);
     Exit;
@@ -64,7 +64,7 @@ begin
   fprog := FormatDateTime('yyyy-mm-dd hh:nn', fechaHora);
 
   id := FormatDateTime('yyyymmddhhnnss', Now);
-  Prog_Enqueue(id, CurrentUserEmail, para, asu, fprog, msg);
+  Prog_Enqueue(id, Domain_GetCurrentUser, para, asu, fprog, msg);
 
   MessageDlg('Correo programado en la cola.', mtInformation, [mbOK], 0);
   Close;

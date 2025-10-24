@@ -8,6 +8,9 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls;
 
 type
+
+  { TFormCrearCuenta }
+
   TFormCrearCuenta = class(TForm)
     btnCrear: TButton;
     btnCancelar: TButton;

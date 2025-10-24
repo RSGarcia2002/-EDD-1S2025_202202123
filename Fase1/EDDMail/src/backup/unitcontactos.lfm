@@ -1,7 +1,7 @@
 object FormContactos: TFormContactos
-  Left = 2676
+  Left = 1525
   Height = 346
-  Top = 304
+  Top = 219
   Width = 397
   Caption = 'Contactos'
   ClientHeight = 346
@@ -29,7 +29,7 @@ object FormContactos: TFormContactos
   object btnCerrar: TButton
     Left = 112
     Height = 25
-    Top = 280
+    Top = 296
     Width = 168
     Caption = 'Cerrar'
     TabOrder = 2
@@ -38,10 +38,19 @@ object FormContactos: TFormContactos
   object btnAgregar: TButton
     Left = 112
     Height = 25
-    Top = 248
+    Top = 232
     Width = 171
     Caption = 'Agregar'
     TabOrder = 3
     OnClick = btnAgregarClick
+  end
+  object btnEliminarContacto: TButton
+    Left = 112
+    Height = 25
+    Top = 264
+    Width = 171
+    Caption = 'Eliminar Contacto'
+    TabOrder = 4
+    OnClick = btnEliminarContactoClick
   end
 end

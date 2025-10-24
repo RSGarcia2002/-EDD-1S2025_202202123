@@ -5,7 +5,7 @@ unit UnitLogin;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, UReports;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, UReports, UDomain;
 
 type
 
@@ -73,7 +73,15 @@ begin
   // Usuario normal
   if User_ValidarLogin(edtEmail.Text, edtPassword.Text, nom, usu, tel) then
   begin
-    CurrentUserEmail := edtEmail.Text;
+    // Inicializa estructuras primero
+    Domain_InitDrafts;
+    Domain_InitContacts;
+    Domain_InitFavs;
+
+    // AHORA fija el usuario actual en UDomain (única fuente de verdad)
+    Domain_SetCurrentUser(edtEmail.Text);
+    ShowMessage('Logueado como: ' + Domain_GetCurrentUser);
+
     if not Assigned(FormMenuUsuario) then
       Application.CreateForm(TFormMenuUsuario, FormMenuUsuario);
     FormMenuUsuario.Configurar(nom, usu);
@@ -83,9 +91,8 @@ begin
     Exit;
   end;
 
-  // Ninguno
-  MessageDlg('Credenciales inválidas.', mtError, [mbOK], 0);
 end;
+
 
 procedure TFormLogin.btnCrearCuentaClick(Sender: TObject);
 begin

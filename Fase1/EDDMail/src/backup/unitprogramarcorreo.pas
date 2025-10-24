@@ -51,15 +51,15 @@ begin
     Exit;
   end;
 
-  // Debe existir y ser contacto
+  // Debe existir y ser contacto DEL USUARIO ACTUAL
   u := User_FindByEmail(para);
-  if (u=nil) or (not Contacts_Exists(para)) then
+  if (u = nil) or (not Contacts_ExistsFor(CurrentUserEmail, para)) then
   begin
     MessageDlg('Solo puedes programar para correos que EXISTEN y son tu CONTACTO.', mtError,[mbOK],0);
     Exit;
   end;
 
-  // Unimos fecha y hora seleccionadas
+  // fecha y hora seleccionadas
   fechaHora := deFecha.Date + Frac(teHora.Time);
   fprog := FormatDateTime('yyyy-mm-dd hh:nn', fechaHora);
 
